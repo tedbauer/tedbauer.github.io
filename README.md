@@ -1,9 +1,5 @@
-# sitegen
+# Notes
+test note1
 
-Place markdown files in `site/`. You can write mathematical expressions like `$$ x + 5 $$` and
-they'll be rendered with [KaTeX](https://katex.org/). Then, compile `index.html`:
+$$ \int_{a}^{b} x^2 \,dx $$
 
-```
-cd sitegen
-cargo run
-```
