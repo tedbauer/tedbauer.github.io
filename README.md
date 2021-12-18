@@ -1,5 +1,3 @@
 # Notes
-test note1
 
-$$ \int_{a}^{b} x^2 \,dx $$
-
+A website for some notes.
