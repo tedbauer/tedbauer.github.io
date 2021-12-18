@@ -1,0 +1,3 @@
+[submodule "sitegen"]
+	path = sitegen
+	url = https://github.com/tedbauer/sitegen
