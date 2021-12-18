@@ -1,7 +1,10 @@
 use std::fs::File;
+use std::fs::{self};
 use std::io::Write;
-fn main() -> std::io::Result<()> {
-    let index = r#"
+
+fn wrap_in_html(body: &str) -> String {
+    format!(
+        r#"
 <!DOCTYPE html>
 <!-- KaTeX requires the use of the HTML5 doctype. Without it, KaTeX may not render properly -->
 <html>
@@ -15,11 +18,42 @@ fn main() -> std::io::Result<()> {
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
         onload="renderMathInElement(document.body);"></script>
   </head>
-$$ 5 + 5 $$
-  ...
-</html>"#;
+	{}
+</html>"#,
+        body
+    )
+}
+
+fn main() -> std::io::Result<()> {
+    let mut table_of_contents = "<ul>\n".to_owned();
+    let mut pages: Vec<(String, String)> = Vec::new();
+    for entry in fs::read_dir("../site")? {
+        let entry = entry?;
+        table_of_contents.push_str("<li>");
+        table_of_contents.push_str(&format!(
+            r#"<a href="pages/{}">"#,
+            str::replace(&entry.file_name().into_string().unwrap(), "md", "html")
+        ));
+        table_of_contents.push_str(&entry.file_name().into_string().unwrap());
+        pages.push((
+            entry.file_name().into_string().unwrap(),
+            fs::read_to_string(&entry.path()).unwrap(),
+        ));
+        table_of_contents.push_str("</a>");
+        table_of_contents.push_str("</li>");
+        table_of_contents.push_str("\n");
+    }
+    table_of_contents.push_str("</ul>");
 
     let mut file = File::create("../index.html")?;
-    file.write_all(index.as_bytes())?;
+    file.write_all(wrap_in_html(&table_of_contents).as_bytes())?;
+    fs::create_dir("../pages")?;
+    for (page_name, page_contents) in pages {
+        let mut page_file = File::create(format!(
+            "../pages/{}",
+            str::replace(&page_name, "md", "html")
+        ))?;
+        page_file.write_all(wrap_in_html(&page_contents).as_bytes())?;
+    }
     Ok(())
 }
