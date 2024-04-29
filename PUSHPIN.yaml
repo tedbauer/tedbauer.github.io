@@ -4,9 +4,8 @@ posts:
   - title: 'Post 1'
     date: 2024-04-28
     path: posts/notes1.md
+    name: post1
   - title: 'Post 2'
     date: 2024-05-05
     path: posts/notes2.md
-  - title: 'Post 3'
-    date: 2024-05-05
-    path: posts/notes3.md
+    name: post2
