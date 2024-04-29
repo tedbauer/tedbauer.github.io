@@ -1,0 +1,42 @@
+
+name: Generate and Commit Files
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  generate_and_commit:
+    runs-on: ubuntu-latest
+
+    # permissions:
+      # contents: write
+      # pull-requests: write
+
+    steps:
+      - name: Install Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Checkout website repo on publish branch
+        uses: actions/checkout@v3
+        ref: gh-pages
+        with:
+          fetch-depth: 0
+
+      - name: Clone Other Repository
+        uses: actions/checkout@v3
+        with:
+          repository: tedbauer/pushpin
+          ref: master
+          path: cloned-repo 
+
+      - name: Run Command (in cloned repo)
+        working-directory: cloned-repo
+        run: |
+          cargo build --release
+          alias pushpin=$(pwd)/target/release/pushpin
