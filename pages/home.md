@@ -2,6 +2,8 @@
 
 This is an example title page.
 
+Here is some text.
+
 ```
 ExampleCodeBlock();
 
