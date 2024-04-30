@@ -23,9 +23,9 @@ jobs:
 
       - name: Checkout website repo on publish branch
         uses: actions/checkout@v3
-        branch: gh-pages
         with:
           fetch-depth: 0
+          branch: gh-pages
 
       - name: Clone Other Repository
         uses: actions/checkout@v3
