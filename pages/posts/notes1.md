@@ -12,3 +12,5 @@ for (let i = 0; i < 10; i++) {
 ## A subheading
 
 Example text.
+
+Inline code: `x + 5`
