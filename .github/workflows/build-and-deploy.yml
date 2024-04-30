@@ -38,9 +38,10 @@ jobs:
         working-directory: cloned-repo
         run: |
           cargo build --release
-          alias pushpin=$(pwd)/target/release/pushpin
+          PUSHPIN_PATH=$(pwd)/target/release/pushpin
+          echo "PUSHPIN_PATH=$PUSHPIN_PATH" >> $GITHUB_ENV
           cd ..
-          pushpin
+          $PUSHPIN_PATH
 
       - name: Commit changes and push
         working-directory: cloned-repo
