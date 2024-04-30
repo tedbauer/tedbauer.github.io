@@ -50,14 +50,6 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git checkout -b
-          git commit -m "Automated file generation"
-          git push https://${{ secrets.ACCESS_TOKEN }}@github.com/tedbauer/tedbauer.github.io HEAD:gh-pages --force
-
-      - name: Commit changes and push
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
+          git checkout -b gh-pages
           git commit -m "Automated file generation"
           git push https://${{ secrets.ACCESS_TOKEN }}@github.com/tedbauer/tedbauer.github.io HEAD:gh-pages --force
