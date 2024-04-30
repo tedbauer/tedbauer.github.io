@@ -23,7 +23,7 @@ jobs:
 
       - name: Checkout website repo on publish branch
         uses: actions/checkout@v3
-        ref: gh-pages
+        branch: gh-pages
         with:
           fetch-depth: 0
 
