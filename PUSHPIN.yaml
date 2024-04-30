@@ -5,7 +5,3 @@ posts:
     date: 2024-04-28
     path: posts/notes1.md
     name: post1
-  - title: 'Post 2'
-    date: 2024-05-05
-    path: posts/notes2.md
-    name: post2
