@@ -13,4 +13,4 @@ for (let i = 0; i < 10; i++) {
 
 Example text.
 
-Inline code: `x + 5`
+Inline code: `x + 5 + 25`
