@@ -1,4 +1,4 @@
-name: Generate and Commit Files
+name: Generate site and push to GitHub pages branch
 
 on:
   push:
@@ -25,17 +25,28 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          ref: gh-pages
+          branch: gh-pages
 
-      - name: Clone Other Repository
+      - name: Clone pushpin
         uses: actions/checkout@v3
         with:
           repository: tedbauer/pushpin
-          ref: master
+          branch: master
           path: cloned-repo 
 
-      - name: Run Command (in cloned repo)
+      - name: Build, install, and run pushpin
         working-directory: cloned-repo
         run: |
           cargo build --release
           alias pushpin=$(pwd)/target/release/pushpin
+          cd ..
+          pushpin
+
+      - name: Commit changes and push
+        working-directory: cloned-repo
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Automated file generation"
+          git push origin HEAD:gh-pages --force
