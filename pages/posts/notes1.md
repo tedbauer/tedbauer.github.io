@@ -9,8 +9,6 @@ for (let i = 0; i < 10; i++) {
 }
 ```
 
-Testing.
-
 ## A subheading
 
 Inline code: `x + 5 + 25`
