@@ -5,3 +5,11 @@ posts:
     date: 2024-04-28
     path: posts/notes1.md
     name: post1
+  - title: 'Test posts, to see formatting'
+    date: 2024-04-28
+    path: posts/notes1.md
+    name: post2
+  - title: 'More posts to see formatting, with a longer title'
+    date: 2024-04-28
+    path: posts/notes1.md
+    name: post3
