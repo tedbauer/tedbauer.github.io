@@ -1,7 +1,7 @@
 homepage: home.md
 
 posts:
-  - title: 'Post 1'
+  - title: '`up`: a humble tool for ascending directories'
     date: 2024-04-28
     path: posts/notes1.md
     name: post1
