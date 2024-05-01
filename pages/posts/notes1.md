@@ -8,8 +8,3 @@ for (let i = 0; i < 10; i++) {
   print("hello world");
 }
 ```
-Latest changes.
-
-## A subheading
-
-Inline code: `x + 5 + 25`
