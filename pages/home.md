@@ -1,8 +1,6 @@
 # Theodore Bauer
 
-This site is under construction.
-
-Test change.
+I'm a software engineer based in Somerville, MA. Currently, I'm working at Google on the Android operating system.
 
 ## Posts
 
