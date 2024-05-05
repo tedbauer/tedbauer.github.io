@@ -1,7 +1,7 @@
 homepage: home.md
 
 posts:
-  - title: 'Test post'
-    date: 2024-04-28
+  - title: 'Making a small tool to jump multiple directory levels quickly'
+    date: 05-05-2024
     path: posts/notes1.md
     name: post1
