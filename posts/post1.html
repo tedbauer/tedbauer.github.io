@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<title>Making a small tool to jump multiple directory levels quickly</title>
+        <link rel="stylesheet" href="../style/stylesheet.css">
+        <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    </head>
+    <body>
+        <div class="toplevel">
+        <div class="card">
+        <a class="back-button" href="../index.html">
+            <img src="../images/back.png" width="20px" height="20px">back
+        </a>
+
+	<div class="content">
+
+        <h1><code>up</code>: jump multiple directory levels quickly</h1>
+<h2>Introduction</h2>
+<p>Recently in my day to day, I have been <code>cd</code>ing around deeply nested directories, and I have been finding myself often repeatedly typing <code>cd ..</code>. I often find myself wishing I can just quickly jump up a few directory levels from the current working directory in a quick and natural way. I was also curious to learn about how tab autocomplete is implemented in the shell, so I was inspired to make a tool to enable this.</p>
+<p>Here is a short demo of <code>up</code> in action:</p>
+<p><a href="https://asciinema.org/a/fVYEkFs8c2m6sXYd1sAtXQ1L7"><img src="https://asciinema.org/a/fVYEkFs8c2m6sXYd1sAtXQ1L7.svg" alt="asciicast" /></a></p>
+<p>You can type <code>up d</code>, where <code>d</code> is either a directory above you, or a prefix of a directory above you, and you will be <code>cd</code>'d up to that directory.</p>
+<h2>Implementing autocomplete for bash</h2>
+<p>Bash provides a mechanism for user-created autocompletion with the <a href="https://linuxcommand.org/lc3_man_pages/completeh.html"><code>complete</code></a> command. You pass it the name of the command you want to support autocomplete for, and then the name of a function that dynamically generates the set of possible autocompletes, based on the current user input:</p>
+<pre><code>up_completion() {
+    completions=$($BINARY_PATH --complete $COMP_CWORD $COMP_LINE)
+    COMPREPLY=($completions)
+}
+
+complete -F up_completion up
+</code></pre>
+<p>Here, we get the user input from <code>$COMP_CWORD</code> (an index into a space-separated list of input words) and <code>$COMP_LINE</code> (the entire user input line) and pass them to a Rust binary that computes the possible autocompletes. Setting <code>$COMPREPLY</code> supplies the autocomplete options to the user.</p>
+<p>In the Rust binary, we get the current working directory, determine each directory name, and then return a list of directory names that contain the input as a prefix:</p>
+<pre><code>fn generate_completion_options(working_dir: &amp;str, comp_line: &amp;str, comp_cword: usize) -&gt; Vec&lt;String&gt; {
+    // If there is already a whole argument, don't suggest more autocompletes.
+    if comp_cword &gt; 1 {
+        return vec![];
+    }
+
+    let directories = working_dir
+        .split('/')
+        .map(|s| String::from(s))
+        .collect::&lt;Vec&lt;String&gt;&gt;();
+
+    let user_input = match comp_line.split(" ").nth(1) {
+        Some(arg) =&gt; arg,
+
+        // If there is no input yet, list all directories.
+        None =&gt; return directories,
+    };
+
+    let mut result = Vec::new();
+    for (_, directory) in directories.iter().enumerate() {
+        if directory.starts_with(user_input) {
+            result.push(directory.to_string());
+        }
+    }
+
+    if result.is_empty() {
+        directories
+    } else {
+        result
+    }
+}
+</code></pre>
+<h2>Other similar things</h2>
+<p>There are lots of other useful and creative tools for navigating directories quickly:</p>
+<ul>
+<li>fuzzy finders, like <a href="https://github.com/junegunn/fzf"><code>fzf</code></a></li>
+<li><a href="https://github.com/rupa/z"><code>z</code></a></li>
+<li><a href="https://linux.die.net/man/1/cdargs"><code>cdargs</code></a>, <a href="https://linuxcommand.org/lc3_man_pages/pushdh.html"><code>pushd</code></a> / <a href="https://linuxcommand.org/lc3_man_pages/popdh.html"><code>popd</code></a></li>
+</ul>
+<p>In the Android repository, there is an <a href="https://cs.android.com/android/platform/superproject/main/+/main:build/make/envsetup.sh">environment setup script</a> that sets up an alias, <a href="https://cs.android.com/android/_/android/platform/build/+/db666bcb0ce5934f75664076306a5912c0aa89b7:envsetup.sh;l=1044;bpv=1;bpt=0"><code>croot</code></a>, that <code>cd</code>'s you to the root of the project.</p>
+<h2>Try it out</h2>
+<p>Try it out by installing it with Homebrew:</p>
+<pre><code>brew tap tedbauer/homebrew-up
+brew install tedbauer/homebrew-up/up
+</code></pre>
+<p>Alternatively, you can install it manually. You can clone the repo:</p>
+<pre><code>git clone https://github.com/tedbauer/homebrew-up
+</code></pre>
+<p>The installation comprises of two main things:</p>
+<ul>
+<li><code>up-path-gen</code>: a Rust binary that computes the paths.</li>
+<li><code>up.sh</code>: contains a function <code>up</code>, which is what the user ends up invoking. It invokes <code>up-path-gen</code>.</li>
+</ul>
+<p>You can build the binary, and install it somewhere like <code>/usr/lib</code>, and similarly install <code>up.sh</code> as well:</p>
+<pre><code>cd Formula/up-path-gen &amp;&amp; cargo build --release
+cp target/release/up-path-gen /usr/lib
+cd ..
+cp up.sh /usr/lib
+</code></pre>
+<p>Then, source <code>up.sh</code> in your shell configuration:</p>
+<pre><code>export BINARY_PATH="/usr/lib/up-path-gen"
+source /usr/lib/up.sh
+</code></pre>
+
+
+	</div>
+
+        <a href="https://github.com/tedbauer/tedbauer.github.io/edit/master/pages/posts/notes1.md">Fix a typo</a>
+        </div>
+        </div>
+    <script>hljs.highlightAll();</script>
+    </body>
+</html>
