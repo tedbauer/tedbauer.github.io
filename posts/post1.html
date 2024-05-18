@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-	<title>Making a small tool to jump multiple directory levels quickly</title>
+        <title>My Markdown Content</title>
         <link rel="stylesheet" href="../style/stylesheet.css">
         <link
         href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
@@ -22,7 +22,7 @@
 <h2>Introduction</h2>
 <p>Recently in my day to day, I have been <code>cd</code>ing around deeply nested directories, and I have been finding myself often repeatedly typing <code>cd ..</code>. I often find myself wishing I can just quickly jump up a few directory levels from the current working directory in a quick and natural way. I was also curious to learn about how tab autocomplete is implemented in the shell, so I was inspired to make a tool to enable this.</p>
 <p>Here is a short demo of <code>up</code> in action:</p>
-<p><a href="https://asciinema.org/a/fVYEkFs8c2m6sXYd1sAtXQ1L7"><img src="https://asciinema.org/a/fVYEkFs8c2m6sXYd1sAtXQ1L7.svg" alt="asciicast" /></a></p>
+<p><a href="https://asciinema.org/a/fdSxD29IhP6LmXuGQpbm27sNf"><img src="https://asciinema.org/a/fdSxD29IhP6LmXuGQpbm27sNf.svg" alt="asciicast" /></a></p>
 <p>You can type <code>up d</code>, where <code>d</code> is either a directory above you, or a prefix of a directory above you, and you will be <code>cd</code>'d up to that directory.</p>
 <h2>Implementing autocomplete for bash</h2>
 <p>Bash provides a mechanism for user-created autocompletion with the <a href="https://linuxcommand.org/lc3_man_pages/completeh.html"><code>complete</code></a> command. You pass it the name of the command you want to support autocomplete for, and then the name of a function that dynamically generates the set of possible autocompletes, based on the current user input:</p>
