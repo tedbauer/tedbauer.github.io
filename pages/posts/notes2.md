@@ -10,5 +10,10 @@ The design consists of wiring together jacks.
 
 ## The build
 
-First, I prototyped the module on a piece of cardboard:
+First, I prototyped the module on a piece of cardboard (please ignore my messy living room):
 
+| | |
+|-----------------|----------------------------------------------|
+| !["a picture of the mult prototyped on cardboard"](../images/deleteme2.jpeg) | !["a picture of the mult prototyped on cardboard"](../images/deleteme.jpeg)|
+
+Next, I considered where to install the mult.
