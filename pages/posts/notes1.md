@@ -2,7 +2,7 @@
 
 ## Introduction
 
-Recently in my day to day, I have been `cd`ing around deeply nested directories, and I have been finding myself often repeatedly typing `cd ..`. I often find myself wishing I can just quickly jump up a few directory levels from the current working directory in a quick and natural way. I was also curious to learn about how tab autocomplete is implemented in the shell, so I was inspired to make a tool to enable this.
+Recently in my day to day, I have been `cd`ing around deeply nested directories, and I have been finding myself often typing `cd ..` repeatedly. I often find myself wishing I can just quickly jump up a few directory levels from the current working directory in a quick and natural way. I was also curious to learn about how tab autocomplete is implemented in the shell, so I was inspired to make a tool to enable this.
 
 Here is a short demo of `up` in action:
 
