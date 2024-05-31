@@ -1,4 +1,4 @@
-# `up`: jump multiple directory levels quickly
+# [`up`](https://github.com/tedbauer/homebrew-up): jump multiple directory levels quickly
 
 ## Introduction
 
