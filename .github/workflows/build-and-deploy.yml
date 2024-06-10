@@ -45,6 +45,16 @@ jobs:
       - name: Remove pushpin local clone
         run: rm -rf cloned-repo
 
+      - name: Clone synth
+        uses: actions/checkout@v3
+        with:
+          repository: tedbauer/sequencer
+          ref: master
+          path: synth-repo
+
+      - name: Move synth to projects folder
+        run: mv synth-repo projects
+
       - name: Commit changes and push
         run: |
           git config user.name github-actions
