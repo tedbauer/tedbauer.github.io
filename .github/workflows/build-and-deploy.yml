@@ -52,7 +52,7 @@ jobs:
 
       - name: Build pocket symphony
         working-directory: pocket-symphony-repo
-      - run: |
+        run: |
           npm install --save-dev ts-loader
           make build
 
