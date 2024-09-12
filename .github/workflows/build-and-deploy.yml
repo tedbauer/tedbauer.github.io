@@ -47,7 +47,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           repository: tedbauer/pocket-symphony
-          ref: master
+          ref: main
           path: pocket-symphony-repo
 
       - name: Build pocket symphony
