@@ -61,6 +61,7 @@ jobs:
         run: |
           cp index.html ../pocket-symphony.html
           cp main.js ../main.js
+          cp stylesheet.css ../stylesheet.css
           mkdir -p ../dist
           cp dist/main.js ../dist/main.js
 
