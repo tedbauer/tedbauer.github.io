@@ -26,12 +26,33 @@ jobs:
           fetch-depth: 0
           ref: master
 
+      - uses: actions/checkout@v3
+      - uses: justgook/setup-elm@1.3.0
+        with:
+          elm-version: '0.19.1'
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
       - name: Clone pushpin
         uses: actions/checkout@v3
         with:
           repository: tedbauer/pushpin
           ref: master
-          path: cloned-repo 
+          path: cloned-repo
+
+      - name: Clone pocket symphony
+        uses: actions/checkout@v3
+        with:
+          repository: tedbauer/pocket-symphony
+          ref: master
+          path: pocket-symphony-repo
+
+      - name: Build pocket symphony
+        working-directory: pocket-symphony-repo
+      - run: |
+          npm install --save-dev ts-loader
+          make build
 
       - name: Build, install, and run pushpin
         working-directory: cloned-repo
