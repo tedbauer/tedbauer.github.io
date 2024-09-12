@@ -56,6 +56,14 @@ jobs:
           npm install --save-dev ts-loader
           make build
 
+      - name: Move pocket symphony files to another dir
+        working-directory: pocket-symphony-repo
+        run: |
+          cp index.html ../pocket-symphony.html
+          cp main.js ../main.js
+          mkdir -p ../dist
+          cp dist/main.js ../dist/main.js
+
       - name: Build, install, and run pushpin
         working-directory: cloned-repo
         run: |
@@ -67,6 +75,9 @@ jobs:
 
       - name: Remove pushpin local clone
         run: rm -rf cloned-repo
+
+      - name: Remove local clone of pocket symphony
+        run: rm -rf pocket-symphony-repo
 
       - name: Commit changes and push
         run: |
