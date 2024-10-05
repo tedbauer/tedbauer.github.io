@@ -11,9 +11,3 @@ I'm a software engineer based in NYC. Currently, I'm working at Google on the An
 | | |
 | -------- | ------- |
 | [Pocket symphony](https://tedbauer.github.io/pocket-symphony.html)   | Pocket symphony is a whimsical music making program. |
-
-## Computer programs
-
-| | |
-| -------- | ------- |
-| [Pocket symphony](https://tedbauer.github.io/pocket-symphony.html)   | Pocket symphony is a whimsical music making program. |
