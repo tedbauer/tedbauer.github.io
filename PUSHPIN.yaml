@@ -6,7 +6,7 @@ posts:
     path: posts/notes1.md
     name: post1
   - title: 'Building a mult module for a modular synthesizer'
-    date: 05-12-2024
+    date: 10-05-2024
     path: posts/notes2.md
     name: post2
 
