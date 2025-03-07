@@ -1,6 +1,6 @@
 # Theodore Bauer
 
-I'm a software engineer based in NYC. Currently, I'm working at Google on the Android operating system.
+I am a software engineer based in NYC. Currently, I'm working at Google on the Android operating system.
 
 <img src="images/posts.png" width="100px" height="40px" style="margin-bottom: -15px" />
 
