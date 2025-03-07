@@ -1,3 +1,7 @@
+---
+template: post.html
+---
+
 # [`up`](https://github.com/tedbauer/homebrew-up): jump multiple directory levels quickly
 
 ## Introduction
@@ -87,6 +91,7 @@ git clone https://github.com/tedbauer/homebrew-up
 ```
 
 The installation comprises of two main things:
+
 - `up-path-gen`: a Rust binary that computes the paths.
 - `up.sh`: contains a function `up`, which is what the user ends up invoking. It invokes `up-path-gen`.
 

@@ -1,3 +1,7 @@
+---
+template: post.html
+---
+
 # Building a mult module for a modular synthesizer
 
 ## Introduction
