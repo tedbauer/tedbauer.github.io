@@ -29,7 +29,7 @@ The audio jacks each have three terminals: a ground terminal, and a left and rig
 
  | | |
 |-|-|
-| !["a picture of the mult prototyped on cardboard"](../images/cardboardback.jpeg) | !["a picture of the mult prototyped on cardboard"](../images/cardboardfront.jpeg)|
+| !["a picture of the mult prototyped on cardboard"](../images/cardboardback.jpeg) | !["a picture of the mult prototyped on cardboard"](../../images/cardboardfront.jpeg)|
 
 ## Final build
 
