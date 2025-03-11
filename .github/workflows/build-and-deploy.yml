@@ -72,7 +72,7 @@ jobs:
           PUSHPIN_PATH=$(pwd)/target/release/pushpin
           echo "PUSHPIN_PATH=$PUSHPIN_PATH" >> $GITHUB_ENV
           cd ..
-          $PUSHPIN_PATH
+          $PUSHPIN_PATH generate
 
       - name: Remove pushpin local clone
         run: rm -rf cloned-repo
