@@ -1,0 +1,71 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>🎶 Beatmaker</title>
+  <script src="main.js"></script>
+  <link rel="stylesheet" type="text/css" href="stylesheet.css">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <div id="myapp"></div>
+  <script src="dist/main.js"></script>
+  <script>
+    var app = Elm.Main.init({
+      node: document.getElementById('myapp')
+    });
+
+    const audioPlayer = new Audio.AudioPlayer((currentChord => {
+      app.ports.receiveCurrentStepUpdate.send(currentChord);
+    }));
+
+    app.ports.toggleDrumPatternAt.subscribe(function (drumTypeAndColumn) {
+      let drumType = drumTypeAndColumn[0];
+      let columnNumber = drumTypeAndColumn[1];
+      audioPlayer.toggleDrumPatternAt(drumType, columnNumber);
+    });
+
+    app.ports.stepEngine.subscribe(function (engineState) {
+      audioPlayer.stepEngine(engineState);
+    });
+
+    // TODO: move these into stepEngine.
+    app.ports.transmitWave.subscribe(function (wave) {
+      audioPlayer.updateWave(wave);
+    });
+
+    app.ports.transmitOctave.subscribe(function (octave) {
+      audioPlayer.updateOctave(octave);
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const knobs = document.querySelectorAll('.knob');
+      let isDragging = false;
+
+      knobs.forEach(knob => {
+        knob.addEventListener('mousedown', function () {
+          isDragging = true;
+          document.body.style.cursor = 'ns-resize';
+          document.body.classList.add('no-select');
+        });
+      });
+
+      document.addEventListener('mouseup', function () {
+        if (isDragging) {
+          isDragging = false;
+          document.body.style.cursor = 'default';
+          document.body.classList.remove('no-select');
+        }
+      });
+
+      document.addEventListener('mousemove', function (event) {
+        if (isDragging) {
+          document.body.style.cursor = 'ns-resize';
+        }
+      });
+    });
+  </script>
+</body>
