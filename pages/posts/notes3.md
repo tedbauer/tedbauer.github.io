@@ -54,7 +54,7 @@ In the next section, we'll walk through some specific examples of all of these c
 
 To understand all this better, I wanted to do a few operations in a trivial repository. I wanted to do the operations, then `ls .git/objects` and inspect the objects with `git cat-file -p <sha>` and graph them out. Even with a puny little repo, this became extremely tedious, so I worked with some AI chatbots to write a script to automate the process.
 
-Feel free to follow along with this in your own demo repository if you like, or you can just read here. You can run these commands directly, and [download the script to run it yourself](https://github.com/tedbauer/git-objects-graphviz).
+Feel free to [download the script] and follow along with the commands in this post, in your own demo repository if you like. Or you can just read along!
 
 ### Create a file
 
