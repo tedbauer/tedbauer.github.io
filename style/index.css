@@ -2,14 +2,26 @@ body {
     background-color: #edfff3;
 }
 
+.gh-link {
+    display: flex;
+    align-items: center;
+}
+
 .footer {
     margin-top: -15px;
     font-family: 'Merriweather', serif;
     font-size: 80%;
     display: flex;
+    /* Make it a flex container */
+    justify-content: space-between;
+    /* Push items to opposite ends */
+    width: 420px;
     align-items: center;
-    justify-content: center;
 }
+
+.footer-left {}
+
+.footer-right {}
 
 .card {
     background-color: white;
