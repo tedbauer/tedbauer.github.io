@@ -2,59 +2,22 @@ body {
     background-color: #edfff3;
 }
 
-.footer {
-    margin-top: -15px;
-    font-family: 'Merriweather', serif;
-    font-size: 80%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .card {
     background-color: white;
     width: 380px;
     margin: 20px;
     padding: 25px;
     position: relative;
+
     border-radius: 20px;
     border-width: 1px;
     border-color: black;
     border-style: solid;
+
     box-shadow: black 5px 5px;
+
     font-family: 'Merriweather', serif;
     font-size: 80%;
-}
-
-#postNavbar {
-    top: 100px;
-    position: sticky;
-    font-family: 'Merriweather', serif;
-    font-size: 80%;
-    width: 200px;
-    border-width: 1px;
-}
-
-#postNavbar li:hover {
-    background-color: #eee;
-    transform: scale(1.05);
-    position: relative;
-    /* Add this to create stacking context */
-}
-
-#postNavbar li {
-    list-style: none;
-    margin: 5px 0;
-    cursor: pointer;
-    padding: 2px;
-    text-align: left;
-    transition: all 0.2s ease;
-}
-
-#postNavbar li.active {
-    background-color: #228B22;
-    color: #fff !important;
-    font-weight: bold;
 }
 
 @media only screen and (max-width: 767px) {
@@ -78,7 +41,7 @@ body {
 .toplevel {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     padding: 50px;
     position: relative;
 }
@@ -103,7 +66,7 @@ body {
     transform: scale(1.05);
 }
 
-.index-link {
+a {
     padding: 10px;
     border-radius: 20px;
     display: flex;
@@ -112,7 +75,7 @@ body {
     transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
 }
 
-.index-link:hover {
+a:hover {
     background-color: dodgerblue;
     background-color: lightblue;
     transform: scale(1.05);
@@ -120,25 +83,7 @@ body {
 
 .content img {
     width: 90%;
-    object-fit: cover;
+    object-fit: contain;
     border-style: solid;
     border-width: 1px;
-}
-
-.zoomable {
-    transition: transform 0.3s ease;
-    position: relative;
-    z-index: 1000;
-}
-
-.zoomable:hover {
-    transform: scale(3);
-    z-index: 1000;
-    /* High enough to be above everything */
-}
-
-#postNavbar li.h3-item {
-    padding: 2px;
-    color: #666;
-    margin-left: 8px;
 }
