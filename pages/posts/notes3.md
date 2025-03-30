@@ -174,7 +174,7 @@ Changes to be committed:
  modified:   foo.txt
 ```
 
-Git can see that we've edited `foo.txt`, but haven't committed the changes yet, just like we want!
+Git can see that we've edited `foo.txt`, but haven't committed the changes yet, just like we wanted!
 
 After generating and checking the graph again, the pointers are back to normal, and now that bad commit is the one that's dangling:
 
