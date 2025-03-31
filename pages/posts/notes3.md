@@ -180,7 +180,7 @@ After generating and checking the graph again, the pointers are back to normal, 
 
 <div class="zoomable">
 
-![alt text](../images/git5.png "Graph of git object database after accidentally editng and amending")
+![alt text](../images/git5.png "Graph of git object database after fixing the bad amend")
 
 </div>
 
