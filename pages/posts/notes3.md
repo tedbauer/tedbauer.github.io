@@ -17,7 +17,7 @@ Despite using Git daily for years, I don't understand it very well. I stick to a
 
 I've always treated these Git commands as black boxes. It's enough to get by and to collaborate. But the second that anything slightly outside of these workflows arises, I totally crumble. For example, I might edit some files, hoping to create a new commit for the changes. But then instead of typing `git commit`, I accidentally type `git commit --amend`, and now I've amended whatever the latest commit was. In this situation, I'm truly defeated. Folks, I'm not proud of this, but whenever this happens, I copy my work to a temporary directory, then `checkout` a different branch; delete the branch I was just on with `git branch -D`; then create a brand new branch, and copy the temporary directory back to get myself back to the state before the bad amend.
 
-I really wanted to finally invest some time in understanding what Git is doing under the hood, so I could resort to these sad reconciliations less frequently. For an exercise, I walked through the exercise of seeing what it does in this particular bad-amend scenario. It was a useful way to get comfortable with these concepts:
+I really wanted to finally invest some time in understanding what Git is doing under the hood, so I could resort to these sad reconciliations less frequently. For an exercise, I walked through what exactly Git does in this particular bad-amend scenario. It was a useful way to get comfortable with these concepts:
 
 - How does Git represent the state of a repository, and how can we inspect the state?
 - What's `reflog`?
