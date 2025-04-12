@@ -7,15 +7,20 @@ body {
     align-items: center;
 }
 
+.main-container {
+    width: 480px;
+}
+
 .footer {
     margin-top: -15px;
     font-family: 'Merriweather', serif;
     font-size: 80%;
+    padding-left: 25px;
+    padding-right: 25px;
     display: flex;
     /* Make it a flex container */
     justify-content: space-between;
     /* Push items to opposite ends */
-    width: 420px;
     align-items: center;
 }
 
@@ -25,7 +30,6 @@ body {
 
 .card {
     background-color: white;
-    width: 380px;
     margin: 20px;
     padding: 25px;
     position: relative;
@@ -41,22 +45,16 @@ body {
     font-size: 80%;
 }
 
-@media only screen and (max-width: 767px) {
+@media only screen and (max-width: 500px) {
     .toplevel {
-        padding: 20px;
         flex-direction: column;
+        padding: 0px;
     }
 
-    .card {
-        width: calc(100% - 10px);
-        max-width: 480px;
-        margin: 10px auto;
-        padding: 20px;
-        border-radius: 20px;
-        border-width: 1px;
-        border-color: black;
-        border-style: solid;
-        box-shadow: black 5px 5px;
+    .main-container {
+        width: 137%;
+        margin-top: -65px;
+        padding: 0px;
     }
 }
 
