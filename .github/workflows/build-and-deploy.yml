@@ -26,15 +26,17 @@ jobs:
           fetch-depth: 0
           ref: master
 
-      - name: Install elm
-        uses: justgook/setup-elm@1.3.0
-        with:
-          elm-version: '0.19.1'
+      # This action seems broken for now :(
+      # Error: getCacheEntry failed: This legacy service is shutting down, effective April 15, 2025. Migrate to the new service ASAP. For more information: https://gh.io/gha-cache-sunset
+      # - name: Install elm
+      #   uses: justgook/setup-elm@1.3.0
+      #   with:
+      #     elm-version: '0.19.1'
 
-      - name: Install node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
+      # - name: Install node
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: 16
 
       - name: Clone pushpin
         uses: actions/checkout@v3
@@ -43,27 +45,27 @@ jobs:
           ref: master
           path: cloned-repo
 
-      - name: Clone pocket symphony
-        uses: actions/checkout@v3
-        with:
-          repository: tedbauer/pocket-symphony
-          ref: main
-          path: pocket-symphony-repo
+      # - name: Clone pocket symphony
+      #   uses: actions/checkout@v3
+      #   with:
+      #     repository: tedbauer/pocket-symphony
+      #     ref: main
+      #     path: pocket-symphony-repo
 
-      - name: Build pocket symphony
-        working-directory: pocket-symphony-repo
-        run: |
-          npm install --save-dev ts-loader
-          make build
+      # - name: Build pocket symphony
+      #   working-directory: pocket-symphony-repo
+      #   run: |
+      #     npm install --save-dev ts-loader
+      #     make build
 
-      - name: Move pocket symphony files to another dir
-        working-directory: pocket-symphony-repo
-        run: |
-          cp index.html ../pocket-symphony.html
-          cp main.js ../main.js
-          cp stylesheet.css ../stylesheet.css
-          mkdir -p ../dist
-          cp dist/main.js ../dist/main.js
+      # - name: Move pocket symphony files to another dir
+      #   working-directory: pocket-symphony-repo
+      #   run: |
+      #     cp index.html ../pocket-symphony.html
+      #     cp main.js ../main.js
+      #     cp stylesheet.css ../stylesheet.css
+      #     mkdir -p ../dist
+      #     cp dist/main.js ../dist/main.js
 
       - name: Build, install, and run pushpin
         working-directory: cloned-repo
@@ -77,8 +79,8 @@ jobs:
       - name: Remove pushpin local clone
         run: rm -rf cloned-repo
 
-      - name: Remove local clone of pocket symphony
-        run: rm -rf pocket-symphony-repo
+      # - name: Remove local clone of pocket symphony
+      #   run: rm -rf pocket-symphony-repo
 
       - name: Commit changes and push
         run: |
