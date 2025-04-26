@@ -14,18 +14,27 @@
 
 <body>
     <div class="toplevel">
-        <div class="card">
-            <a class="back-button" href="../index.html">
-                <img src="../images/back.png" width="20px" height="20px">back
-            </a>
+        <div class="main-container">
+            <div class="card">
+                <a class="back-button" href="../index.html">
+                    <img src="../images/back.png" width="20px" height="20px">back
+                </a>
 
-            <div class="content">
+                <div class="content">
 
-                {{content | safe}}
+                    {{content | safe}}
 
+                </div>
+                
+                <div class="post-footer">
+                    <button id="backToTopBtn" class="back-to-top">
+                        <img src="../images/up.png" width="26px" height="26px">back to top
+                    </button>
+                    <a href="https://github.com/tedbauer/tedbauer.github.io/edit/master/{{path}}" class="typo-button">
+                        <img src="../images/pencil.png" width="26px" height="26px">fix a typo
+                    </a>
+                </div>
             </div>
-
-            <a href="https://github.com/tedbauer/tedbauer.github.io/edit/master/{{path}}">Fix a typo</a>
         </div>
         <div id="postNavbar"></div>
     </div>
@@ -34,6 +43,12 @@
         hljs.highlightAll();
         const postNavbar = document.getElementById('postNavbar');
         const headers = document.querySelectorAll('h2, h3, h4, h5, h6');
+        const backToTopBtn = document.getElementById('backToTopBtn');
+
+        // Back to top button functionality
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         // Create list elements for each header
         headers.forEach(header => {
