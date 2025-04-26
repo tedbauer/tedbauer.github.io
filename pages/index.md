@@ -4,7 +4,12 @@ template: index.html
 
 # Theodore Bauer
 
-I'm a software engineer based in NYC. Currently, I'm working at Google Labs. From 2022-2025, I worked on the Android operating system.
+<div class="profile-picture-container">
+    <img src="images/ted.jpeg" alt="Profile Picture" class="profile-picture">
+    <div class="bio-content">
+        <p>Welcome to my lil site! I'm a software engineer based in NYC. Currently, I'm working at Google Labs. From 2022-2025, I worked on the Android operating system.</p>
+    </div>
+</div>
 
 <img src="images/posts.png" width="100px" height="40px" style="margin-bottom: -15px" />
 

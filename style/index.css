@@ -108,3 +108,28 @@ a:hover {
     border-style: solid;
     border-width: 1px;
 }
+
+.profile-picture-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+    margin: 20px 0 30px 0;
+}
+
+.profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid black;
+    flex-shrink: 0;
+}
+
+.bio-content {
+    flex: 1;
+}
+
+.bio-content p {
+    margin: 0;
+}
