@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Understanding git a lil better</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/post.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+
+<body>
+    <div class="toplevel">
+        <div class="main-container">
+            <div class="card">
+                <a class="back-button" href="../index.html">
+                    <img src="../images/back.png" width="20px" height="20px">back
+                </a>
+
+                <div class="content">
+
+                    <h1>Understanding git a lil better</h1>
+<h2>Introduction</h2>
+<p>Despite using Git daily for years, I don't understand it very well. I stick to a few core workflows:</p>
+<ul>
+<li>Edit or create some files, <code>add</code> them, and <code>commit</code> them.</li>
+<li><code>push</code> commits to a remote repository, and <code>pull --rebase</code> to get the latest changes, resolving any merge conflicts.</li>
+<li>Work on different features in branches, with <code>branch</code>.</li>
+<li>Update files or a commit message for a commit, with <code>commit --amend</code>.</li>
+<li><code>checkout</code> a branch or specific commit to see files at a previous point in time.</li>
+<li><code>cherry-pick</code> a commit into a branch to pull in a specific change.</li>
+</ul>
+<p>I've always treated these Git commands as black boxes. It's enough to get by and to collaborate. But the second that anything slightly outside of these workflows arises, I totally crumble. For example, I might edit some files, hoping to create a new commit for the changes. But then instead of typing <code>git commit</code>, I accidentally type <code>git commit --amend</code>, and now I've amended whatever the latest commit was. In this situation, I'm truly defeated. Folks, I'm not proud of this, but whenever this happens, I copy my work to a temporary directory, then <code>checkout</code> a different branch; delete the branch I was just on with <code>git branch -D</code>; then create a brand new branch, and copy the temporary directory back to get myself back to the state before the bad amend.</p>
+<p>I really wanted to finally invest some time in understanding what Git is doing under the hood, so I could resort to these sad reconciliations less frequently. For an exercise, I walked through what exactly Git does in this particular bad-amend scenario. It was a useful way to get comfortable with these concepts:</p>
+<ul>
+<li>How does Git represent the state of a repository, and how can we inspect the state?</li>
+<li>What's <code>reflog</code>?</li>
+<li>What does <code>git reset</code> do?</li>
+</ul>
+<h2>Git internals crash course</h2>
+<p>To understand what Git does under the hood in this situation, we need a short crash course on how Git's internals are represented.</p>
+<p>Git stores all of its state for a repository in a hidden directory called <code>.git</code>, which first appears when you type <code>git init</code>. It represents most of the state as <em>objects</em>, which are stored in <code>.git/objects/</code> and are are identified by hashes. When storing an object hash, Git creates a directory with the first two characters of the hash, and then a file with the remainder of the hash inside that directory. So if we have an object hash <code>f517306d2b259fb35c9a1ed9cb2d3d6aa9e278b7</code>, it is stored as <code>.git/objects/f5/17306d2b259fb35c9a1ed9cb2d3d6aa9e278b7</code>.</p>
+<p>If you have a Git repository of your own, you can poke around the objects in its <code>.git/objects/</code>. You can inspect an object with <code>git cat-file -p &lt;hash&gt;</code>, where <code>&lt;hash&gt;</code> is the hash of the object.</p>
+<p>There are three different types of objects found in <code>.git/objects/</code>.</p>
+<ul>
+<li>A <strong>blob</strong> stores the content of a file that was at some point committed.
+<ul>
+<li>The content of the file is compressed to save space.</li>
+<li>If you <code>git cat-file -p</code> a blob, it will print the contents of the file.</li>
+</ul>
+</li>
+<li>A <strong>tree</strong> stores the state of a directory at some point.
+<ul>
+<li>It contains pointers to blobs for each file it knows about. It also points to more trees, corresponding to the subdirectories it contains.</li>
+<li><code>git cat-file -p</code> will print out pointers to each blob and subtree.</li>
+</ul>
+</li>
+<li>A <strong>commit</strong> points to a tree, and represents the repository at various snapshots.
+<ul>
+<li>It's comprised of:
+<ul>
+<li>a pointer to a tree object, which holds the state of the files at the commit.</li>
+<li>a pointer to a <em>parent</em> commit, which represents the commit that was committed previously.</li>
+</ul>
+</li>
+<li><code>git cat-file -p</code> will print out pointers to its tree and parents.</li>
+<li>When you type <code>git log</code>, you'll see the latest commit, as well as the list of commits reachable by parent pointers.</li>
+</ul>
+</li>
+</ul>
+<p>A <em>branch</em> turns out then to be simply a label, a pointer to a commit object. <code>HEAD</code> is a pointer that points to the branch that we have <em>checked out</em>.</p>
+<p>In the next section, we'll walk through some specific examples of all of these concepts.</p>
+<h2>Inspect Git's internals in a small repository</h2>
+<p>To understand all this better, I wanted to do a few operations in a trivial repository. I wanted to do the operations, then <code>ls .git/objects</code> and inspect the objects with <code>git cat-file -p &lt;sha&gt;</code> and graph them out. Even with a puny little repo, this became extremely tedious, so I worked with some AI chatbots to write a script to automate the process.</p>
+<p>Feel free to <a href="https://github.com/tedbauer/git-objects-graphviz/">download the script</a> and follow along with the commands in this post, in your own demo repository if you like. Or you can just read along!</p>
+<h3>Create a file</h3>
+<p>First, we start with an empty repository. We create a single file, add it, and commit it:</p>
+<pre><code class="language-sh">mkdir my-repo &amp;&amp; cd my-repo &amp;&amp; git init
+echo "Hello, foo." &gt; foo.txt
+git add foo.txt
+git commit -m "Create foo.txt."
+./generate_graphviz.sh # Follow the instructions at https://github.com/tedbauer/git-objects-graphviz so this is possible!
+dot -Tpng git_graph.dot &gt; output.png
+open output.png
+</code></pre>
+<p>After we run the visualization script, we see:</p>
+<div class="zoomable">
+<p><img src="../images/git2.png" alt="alt text" title="Graph of git object database after creating a single file in an empty repository" /></p>
+</div>
+<p><code>Hello, foo.</code> is encoded as a blob, which you can verify with <code>git cat-file -p f11d1d73701ffe5d4ce2c5d50c1595778bb53325</code>:</p>
+<pre><code>$ git cat-file -p f11d1d73701ffe5d4ce2c5d50c1595778bb53325
+Hello, foo.
+</code></pre>
+<p>(The SHA is generated from the file contents; you'll see the SHA in the generated image. You can see all SHA's with <code>git rev-list --objects -g --no-walk --all</code>; that's what the script uses.)</p>
+<p>A tree is also created, which points to this blob. A commit is also created, and <code>main</code> and <code>HEAD</code> both point to this commit.</p>
+<pre><code class="language-sh">$ # Examine the commit.
+$ git cat-file -p 97bbbf1e9732892b9372ec74de09824a311d8469
+tree b8e033d47115b1f5f4e26cb80e809a467be85bd7
+author tedbauer &lt;email&gt; 1743356553 -0400
+committer tedbauer &lt;email&gt; 1743356553 -0400
+
+Create foo.txt.
+$ # Examine the tree.
+$ git cat-file -p b8e033d47115b1f5f4e26cb80e809a467be85bd7
+100644 blob f11d1d73701ffe5d4ce2c5d50c1595778bb53325 foo.txt
+</code></pre>
+<h3>Create a second file</h3>
+<p>We add a second file, add it, commit it.</p>
+<pre><code class="language-sh">echo "Hello, bar." &gt; bar.txt
+git add bar.txt
+git commit -m "Create bar.txt."
+./generate_graphviz.sh
+dot -Tpng git_graph.dot &gt; output.png
+open output.png
+</code></pre>
+<div class="zoomable">
+<p><img src="../images/git3.png" alt="alt text" title="Graph of git object database after creating a second file in the repository" /></p>
+</div>
+<p>This creates a second blob holding <code>Hello, bar.</code> A new tree is created to point to this new blob, as well as the previous blob that holds <code>Hello, foo.</code> A new commit points to this new tree, its parent pointer points to the first commit. <code>HEAD</code> and <code>main</code> point to the new commit.</p>
+<h3>Edit the first file, and amend the previous commit</h3>
+<p>Now we edit the first file, we amend instead of creating a new commit.</p>
+<pre><code class="language-sh">echo "New content to append to foo." &gt;&gt; foo.txt
+git add foo.txt
+git commit --amend # We accidentally amended insteading of committing :(
+</code></pre>
+<p>What happens when we do that?</p>
+<div class="zoomable">
+<p><img src="../images/git4.png" alt="alt text" title="Graph of git object database after accidentally editing and amending" /></p>
+</div>
+<p>In fact, a completely new commit object is created, which <code>main</code> and <code>HEAD</code> point to now. A new blob stores the content <code>Hello, foo. New content to append to foo.</code> A new tree is committed that points to this updated <code>foo.txt</code> blob, as well as <code>bar.txt.</code></p>
+<p>The commit that we previously had still exists, and points to the original blob for <code>foo.txt</code>. But it's unreachable from <code>HEAD</code>.</p>
+<h3>Fix the issue</h3>
+<p>To fix the issue, we need to move the <code>main</code> and <code>HEAD</code> pointers back to the previous commit, and leave the files in our repository as they are currently. Then, it would be as though we had never run <code>git commit --amend</code>. To find this dangling commit, we can use <code>git reflog</code> (short for reference-log).</p>
+<p>The <code>reflog</code> keeps a history of where <code>HEAD</code> has been pointing:</p>
+<pre><code>$ git reflog
+cc23c30 (HEAD -&gt; main) HEAD@{0}: commit (amend): Create bar.txt.
+2f2c993 HEAD@{1}: commit: Create bar.txt.
+47991ab HEAD@{2}: commit (initial): Create foo.txt.
+</code></pre>
+<p>The <code>HEAD@{N}</code> syntax means <code>HEAD</code>, whatever it was <code>N</code> transitions ago; distinct from <code>HEAD^N</code>, which traverses <code>HEAD</code>'s parent pointers <code>N</code> times.</p>
+<p>We need to find the commit before the amend command. Looking at the ref log, looks like we can use <code>2f2c993</code>, the commit right before HEAD transitioned to <code>cc23c30</code>.</p>
+<p>To move <code>HEAD</code> to this commit, we use <code>git reset --soft 2f2c993</code>. This changes the HEAD pointer, but it leaves our repository files unchanged.</p>
+<p>Now, if we run <code>git status</code>:</p>
+<pre><code>$ git status
+On branch main
+Changes to be committed:
+  (use "git restore --staged &lt;file&gt;..." to unstage)
+ modified:   foo.txt
+</code></pre>
+<p>Git can see that we've edited <code>foo.txt</code>, but haven't committed the changes yet, just like we wanted!</p>
+<p>After generating and checking the graph again, the pointers are back to normal, and now that bad commit is the one that's dangling:</p>
+<div class="zoomable">
+<p><img src="../images/git5.png" alt="alt text" title="Graph of git object database after fixing the bad amend" /></p>
+</div>
+<h2>Conclusion</h2>
+<p>Now, I will never delete my branch again if this happens, at least for this particular case!</p>
+
+
+                </div>
+                
+                <div class="post-footer">
+                    <button id="backToTopBtn" class="back-to-top">
+                        <img src="../images/up.png" width="26px" height="26px">back to top
+                    </button>
+                    <a href="https://github.com/tedbauer/tedbauer.github.io/edit/master/pages&#x2F;posts&#x2F;notes3.md" class="typo-button">
+                        <img src="../images/pencil.png" width="26px" height="26px">fix a typo
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="postNavbar"></div>
+    </div>
+    <script>
+
+        hljs.highlightAll();
+        const postNavbar = document.getElementById('postNavbar');
+        const headers = document.querySelectorAll('h2, h3, h4, h5, h6');
+        const backToTopBtn = document.getElementById('backToTopBtn');
+
+        // Back to top button functionality
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Create list elements for each header
+        headers.forEach(header => {
+            const listItem = document.createElement('li');
+
+            // Special handling for h3 elements
+            if (header.tagName.toLowerCase() === 'h3') {
+                listItem.textContent = header.textContent;
+                listItem.classList.add('h3-item');
+            } else {
+                listItem.textContent = header.textContent;
+            }
+
+            listItem.addEventListener('click', (e) => {
+                // Immediately set this header as active when clicked
+                header.scrollIntoView();
+                setActiveHeader(header);
+                e.preventDefault();
+            });
+            postNavbar.appendChild(listItem);
+        });
+
+        function setActiveHeader(header) {
+            const allItems = postNavbar.querySelectorAll('li');
+            allItems.forEach(item => item.classList.remove('active'));
+
+            const index = Array.from(headers).indexOf(header);
+            if (index !== -1) {
+                allItems[index].classList.add('active');
+            }
+        }
+
+        function findVisibleHeader() {
+            // If we're near the bottom of the page, return the last header
+            if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
+                return headers[headers.length - 1];
+            }
+
+            // Check for headers near the top of the viewport (within 100px)
+            const topThreshold = 100;
+            let closestHeader = null;
+            let closestDistance = Infinity;
+
+            headers.forEach(header => {
+                const rect = header.getBoundingClientRect();
+                // Consider both headers slightly above and below the top
+                const distance = Math.abs(rect.top);
+                if (distance < closestDistance && rect.top > -topThreshold) {
+                    closestDistance = distance;
+                    closestHeader = header;
+                }
+            });
+
+            // If we found a header near the top, return it
+            if (closestHeader) {
+                return closestHeader;
+            }
+
+            // If no header is near the top, find the last header that's above the viewport
+            let lastHeaderAbove = null;
+            headers.forEach(header => {
+                const rect = header.getBoundingClientRect();
+                if (rect.bottom <= 0) {
+                    lastHeaderAbove = header;
+                }
+            });
+
+            return lastHeaderAbove || headers[0];
+        }
+
+        function onScroll() {
+            const visibleHeader = findVisibleHeader();
+            if (visibleHeader) {
+                setActiveHeader(visibleHeader);
+            }
+        }
+
+        // Initial call to update active state
+        onScroll();
+
+        // Add debounced scroll listener
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(onScroll, 10);
+        }, { passive: true });
+    </script>
+</body>
+
+</html>

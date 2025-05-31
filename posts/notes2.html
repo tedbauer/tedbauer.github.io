@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Building a mult module for a modular synthesizer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style/post.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+
+<body>
+    <div class="toplevel">
+        <div class="main-container">
+            <div class="card">
+                <a class="back-button" href="../index.html">
+                    <img src="../images/back.png" width="20px" height="20px">back
+                </a>
+
+                <div class="content">
+
+                    <h1>Building a mult module for a modular synthesizer</h1>
+<h2>Introduction</h2>
+<p>In a <a href="https://en.wikipedia.org/wiki/Modular_synthesizer">modular synthesizer</a>, a multiplier module lets one signal control multiple parameters simultaneously. For example, a sine wave could control the both the cutoff of a filter and the pitch of a VCO. A clock signal could control the tempo of two sequencers.</p>
+<p>With the help of a friendly and talented office floormate, and an <a href="https://www.youtube.com/watch?v=sNT0mTsaOMg">instructive and cool YouTube video</a>, I built a DIY one for my modular synthesizer.</p>
+<table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td><img src="../images/finalbuild.jpeg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td><td></td></tr>
+</tbody></table>
+<p>You can plug a signal into any one of the jacks, and then the three remaining jacks become outputs that you can use to control other signals in the synthesizer.</p>
+<h2>Design and prototype</h2>
+<p>This design has a short parts list:</p>
+<ul>
+<li>3 audio jacks</li>
+<li>Wires</li>
+<li>Front panel</li>
+<li><a href="https://www.dymo.com/">Dymo</a> label maker</li>
+</ul>
+<p>The audio jacks each have three terminals: a ground terminal, and a left and right audio terminal. I wired together the ground terminals of each jack, and then the left and right terminals, first prototyping on a piece of cardboard:</p>
+<table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td><img src="../images/cardboardback.jpeg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td><td><img src="../../images/cardboardfront.jpeg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td></tr>
+</tbody></table>
+<h2>Final build</h2>
+<p>Then, my wonderful office floormate gave me a piece of aluminum to use as a front panel to replace the cardboard. It fit perfectly on the left side of my modular synth. We measured four equidistant drilling points on the panel, and used a drill press to drill 1/8th inch holes for the jacks. We also brushed the steel with a brush attachment on the press, which gave the panel a smooth look.</p>
+<table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td><img src="../images/brushed_alum1.jpg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td><td><img src="../images/brushed_alum2.jpg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td></tr>
+<tr><td><img src="../images/brushed_alum3.jpg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td><td><img src="../images/brushed_alum4.jpg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td></tr>
+</tbody></table>
+
+
+                </div>
+                
+                <div class="post-footer">
+                    <button id="backToTopBtn" class="back-to-top">
+                        <img src="../images/up.png" width="26px" height="26px">back to top
+                    </button>
+                    <a href="https://github.com/tedbauer/tedbauer.github.io/edit/master/pages&#x2F;posts&#x2F;notes2.md" class="typo-button">
+                        <img src="../images/pencil.png" width="26px" height="26px">fix a typo
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="postNavbar"></div>
+    </div>
+    <script>
+
+        hljs.highlightAll();
+        const postNavbar = document.getElementById('postNavbar');
+        const headers = document.querySelectorAll('h2, h3, h4, h5, h6');
+        const backToTopBtn = document.getElementById('backToTopBtn');
+
+        // Back to top button functionality
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Create list elements for each header
+        headers.forEach(header => {
+            const listItem = document.createElement('li');
+
+            // Special handling for h3 elements
+            if (header.tagName.toLowerCase() === 'h3') {
+                listItem.textContent = header.textContent;
+                listItem.classList.add('h3-item');
+            } else {
+                listItem.textContent = header.textContent;
+            }
+
+            listItem.addEventListener('click', (e) => {
+                // Immediately set this header as active when clicked
+                header.scrollIntoView();
+                setActiveHeader(header);
+                e.preventDefault();
+            });
+            postNavbar.appendChild(listItem);
+        });
+
+        function setActiveHeader(header) {
+            const allItems = postNavbar.querySelectorAll('li');
+            allItems.forEach(item => item.classList.remove('active'));
+
+            const index = Array.from(headers).indexOf(header);
+            if (index !== -1) {
+                allItems[index].classList.add('active');
+            }
+        }
+
+        function findVisibleHeader() {
+            // If we're near the bottom of the page, return the last header
+            if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 50) {
+                return headers[headers.length - 1];
+            }
+
+            // Check for headers near the top of the viewport (within 100px)
+            const topThreshold = 100;
+            let closestHeader = null;
+            let closestDistance = Infinity;
+
+            headers.forEach(header => {
+                const rect = header.getBoundingClientRect();
+                // Consider both headers slightly above and below the top
+                const distance = Math.abs(rect.top);
+                if (distance < closestDistance && rect.top > -topThreshold) {
+                    closestDistance = distance;
+                    closestHeader = header;
+                }
+            });
+
+            // If we found a header near the top, return it
+            if (closestHeader) {
+                return closestHeader;
+            }
+
+            // If no header is near the top, find the last header that's above the viewport
+            let lastHeaderAbove = null;
+            headers.forEach(header => {
+                const rect = header.getBoundingClientRect();
+                if (rect.bottom <= 0) {
+                    lastHeaderAbove = header;
+                }
+            });
+
+            return lastHeaderAbove || headers[0];
+        }
+
+        function onScroll() {
+            const visibleHeader = findVisibleHeader();
+            if (visibleHeader) {
+                setActiveHeader(visibleHeader);
+            }
+        }
+
+        // Initial call to update active state
+        onScroll();
+
+        // Add debounced scroll listener
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(onScroll, 10);
+        }, { passive: true });
+    </script>
+</body>
+
+</html>
