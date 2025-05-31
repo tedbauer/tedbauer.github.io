@@ -7,7 +7,7 @@ template: index.html
 <div class="profile-picture-container">
     <img src="images/ted.jpeg" alt="Profile Picture" class="profile-picture">
     <div class="bio-content">
-        <p>I'm a software engineer based in NYC. Currently, I'm working at Google Labs. From 2022-2025, I worked on the Android operating system.</p>
+        <p>Hi! I'm a software engineer based in NYC. Currently, I'm working at Google Labs. From 2022-2025, I worked on the Android operating system.</p>
     </div>
 </div>
 
