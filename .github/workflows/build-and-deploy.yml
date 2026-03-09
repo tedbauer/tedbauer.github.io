@@ -77,7 +77,11 @@ jobs:
           $PUSHPIN_PATH generate
 
       - name: Remove pushpin local clone
-        run: rm -rf cloned-repo
+        run: |
+          cp $PUSHPIN_PATH /usr/local/bin/pushpin
+          PUSHPIN_PATH=/usr/local/bin/pushpin
+          echo "PUSHPIN_PATH=$PUSHPIN_PATH" >> $GITHUB_ENV
+          rm -rf cloned-repo
 
       - name: Clone Shrimp (emulator)
         uses: actions/checkout@v3
