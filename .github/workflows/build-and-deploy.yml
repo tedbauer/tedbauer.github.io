@@ -108,6 +108,13 @@ jobs:
           cp emulator-repo/web/pkg/emulator.js shrimp/pkg/
           cp emulator-repo/web/pkg/emulator_bg.wasm shrimp/pkg/
 
+      - name: Generate Shrimp docs with Pushpin
+        working-directory: emulator-repo/docs-site
+        run: |
+          $PUSHPIN_PATH generate
+          mkdir -p ../../shrimp/docs
+          cp -r docs/* ../../shrimp/docs/
+
       - name: Remove emulator local clone
         run: rm -rf emulator-repo
 
