@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shrimp Editor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet" />
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #c8f0d8;
+            color: #111;
+            font-family: 'Merriweather', Georgia, serif;
+            font-weight: 300;
+            font-size: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        #center-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 24px;
+            width: 100%;
+        }
+
+        #main-row {
+            display: flex;
+            gap: 14px;
+            align-items: stretch;
+            height: 375px;
+            width: 100%;
+            max-width: 908px;
+        }
+
+        /* ── Left sidebar ── */
+        #sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        /* Demo picker dropdown — anchored to #demo-wrap */
+        #demo-wrap { position: relative; }
+
+        #demo-picker {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 100%;
+            width: max-content;
+            background: #1e1e1e;
+            border: 1px solid #444;
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+            z-index: 200;
+            overflow: hidden;
+        }
+
+        #demo-picker.hidden {
+            display: none;
+        }
+
+        .picker-item {
+            padding: 8px 14px;
+            font-size: 0.76rem;
+            cursor: pointer;
+            color: #ccc;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .picker-item:last-child {
+            border-bottom: none;
+        }
+
+        .picker-item:hover {
+            background: #2a2a2a;
+            color: #fff;
+        }
+
+        .sidebar-btn {
+            background: #fff;
+            border: 2px solid #111;
+            border-radius: 10px;
+            color: #111;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 400;
+            padding: 10px 12px;
+            box-shadow: 4px 4px 0 #111;
+            transition: box-shadow 0.1s, transform 0.1s;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sidebar-btn:hover {
+            box-shadow: 2px 2px 0 #111;
+        }
+
+        .sidebar-btn:active {
+            transform: scale(0.98);
+            box-shadow: 1px 1px 0 #111;
+        }
+
+        .sidebar-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            box-shadow: 4px 4px 0 #111;
+        }
+
+        #run-btn {
+            background: #2e7d52;
+            color: #fff;
+            font-weight: 700;
+            font-size: 0.88rem;
+            border-color: #1d5c3c;
+        }
+
+        #run-btn:hover {
+            background: #256644;
+        }
+
+        .sidebar-sep {
+            border: none;
+            border-top: 1px solid #aad8b8;
+            margin: 2px 0;
+        }
+
+        /* ── Editor pane ── */
+        #editor-pane {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+            border: 2px solid #111;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 4px 4px 0 #111;
+            background: #fffde7;
+        }
+
+        #tab-bar-wrap {
+            display: flex;
+            align-items: flex-end;
+            background: #111;
+            padding: 4px 8px 0;
+            flex-shrink: 0;
+            min-height: 30px;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        #tab-bar-wrap::-webkit-scrollbar {
+            display: none;
+        }
+
+        #editor-logo {
+            color: #c8f0d8;
+            font-size: 0.75rem;
+            font-weight: 700;
+            white-space: nowrap;
+            padding: 4px 10px 6px 4px;
+            border-right: 1px solid #333;
+            margin-right: 6px;
+            flex-shrink: 0;
+            align-self: center;
+        }
+
+        #tab-bar {
+            display: flex;
+            flex-direction: row;
+            gap: 2px;
+        }
+
+        .tab {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px 4px 12px;
+            background: #333;
+            color: #999;
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            font-size: 0.68rem;
+            font-family: 'Menlo', 'Consolas', monospace;
+            white-space: nowrap;
+            transition: background 0.1s;
+            user-select: none;
+        }
+
+        .tab:hover {
+            background: #444;
+            color: #ccc;
+        }
+
+        .tab.active {
+            background: #fffde7;
+            color: #111;
+        }
+
+        .tab.running .tab-name::before {
+            content: '●';
+            color: #2e7d52;
+            font-size: 0.5rem;
+            margin-right: 4px;
+            vertical-align: middle;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0.35; }
+        }
+
+        .tab-close {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            font-size: 0.85rem;
+            line-height: 1;
+            opacity: 0.5;
+            padding: 0 1px;
+        }
+
+        .tab-close:hover {
+            opacity: 1;
+        }
+
+        /* Editor body: line numbers + textarea side by side */
+        #editor-body {
+            display: flex;
+            flex: 1;
+            min-height: 0;
+            overflow: hidden;
+            border-top: 1px solid #e8e0b0;
+        }
+
+        #line-numbers {
+            background: #f5efcc;
+            color: #b0a870;
+            font-family: 'Menlo', 'Consolas', monospace;
+            font-size: 0.7rem;
+            line-height: 1.65;
+            padding: 12px 8px 12px 10px;
+            text-align: right;
+            user-select: none;
+            overflow: hidden;
+            white-space: pre;
+            min-width: 32px;
+            flex-shrink: 0;
+            border-right: 1px solid #e8e0b0;
+        }
+
+        #code-editor {
+            flex: 1;
+            background: #fffde7;
+            color: #1a1a00;
+            border: none;
+            padding: 12px 14px;
+            font-family: 'Menlo', 'Consolas', 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            line-height: 1.65;
+            resize: none;
+            outline: none;
+            tab-size: 4;
+            overflow-y: auto;
+        }
+
+        #editor-empty {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #b0a870;
+            font-size: 0.75rem;
+            line-height: 2;
+            padding: 16px;
+            gap: 4px;
+        }
+
+        #editor-empty strong {
+            color: #888;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        #compile-error {
+            display: none;
+            padding: 7px 14px;
+            background: #fff0f0;
+            color: #c00;
+            font-family: 'Menlo', 'Consolas', monospace;
+            font-size: 0.68rem;
+            border-top: 1px solid #fcc;
+            white-space: pre-wrap;
+            flex-shrink: 0;
+        }
+
+        #compile-error.visible {
+            display: block;
+        }
+
+        /* ── GB screen ── */
+        #screen-pane {
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ── Controls hint ── */
+        #controls-hint {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: center;
+            padding: 10px 8px 6px;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 4px;
+            font-size: 0.6rem;
+            color: #888;
+            font-family: 'Menlo', 'Consolas', monospace;
+        }
+        .ctrl-row {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .ctrl-key {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            white-space: nowrap;
+        }
+        .ctrl-key kbd {
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+            border-bottom: 2px solid #aaa;
+            border-radius: 4px;
+            padding: 1px 5px;
+            font-size: 0.58rem;
+            font-family: inherit;
+            color: #333;
+        }
+
+        #screen-wrap {
+            position: relative;
+            border: 2px solid #111;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 4px 4px 0 #111;
+            background: #f5f0e8;
+            flex: 1;
+            display: flex;
+            align-items: stretch;
+        }
+
+        canvas#screen {
+            image-rendering: pixelated;
+            width: 320px;
+            display: block;
+        }
+
+        #screen-placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            background: #f5f0e8;
+            color: #999;
+            font-size: 0.8rem;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        #screen-placeholder .ph-icon {
+            font-size: 2.2rem;
+            opacity: 0.4;
+        }
+
+        #screen-placeholder .ph-text {
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        #screen-placeholder.hidden {
+            display: none;
+        }
+
+        /* ── Terminal ── */
+        #terminal-panel {
+            width: 100%;
+            max-width: 908px;
+            border: 2px solid #111;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 4px 4px 0 #111;
+            background: #1a1a12;
+        }
+
+        #terminal-header {
+            padding: 5px 12px;
+            background: #111;
+            color: #666;
+            font-size: 0.68rem;
+            font-family: 'Menlo', 'Consolas', monospace;
+            letter-spacing: 0.04em;
+            border-bottom: 1px solid #222;
+        }
+
+        #terminal-output {
+            padding: 8px 14px;
+            font-family: 'Menlo', 'Consolas', monospace;
+            font-size: 0.7rem;
+            line-height: 1.8;
+            color: #b0c090;
+            min-height: 52px;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+
+        .term-line {
+            display: block;
+            white-space: pre-wrap;
+        }
+
+        .term-ok {
+            color: #7ee8a2;
+        }
+
+        .term-err {
+            color: #f87171;
+        }
+
+        .term-dim {
+            color: #555;
+        }
+
+        .term-info {
+            color: #c8f0d8;
+        }
+
+        /* ── Bottom bar ── */
+        #bottom-bar {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 908px;
+        }
+
+        #status {
+            font-size: 0.75rem;
+            color: #aaa;
+            flex: 1;
+        }
+
+        .load-rom-btn {
+            background: #fff;
+            border: 2px solid #111;
+            border-radius: 8px;
+            color: #111;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 300;
+            padding: 4px 12px;
+            box-shadow: 3px 3px 0 #111;
+            transition: box-shadow 0.1s;
+            white-space: nowrap;
+        }
+
+        .load-rom-btn:hover {
+            box-shadow: 1px 1px 0 #111;
+        }
+
+        #debug-toggles {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dbg-btn {
+            background: #fff;
+            border: 2px solid #111;
+            border-radius: 8px;
+            color: #111;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 300;
+            padding: 4px 12px;
+            box-shadow: 3px 3px 0 #111;
+            transition: box-shadow 0.1s;
+        }
+
+        .dbg-btn:hover {
+            box-shadow: 1px 1px 0 #111;
+        }
+
+        .dbg-btn.active {
+            background: #111;
+            color: #fff;
+            box-shadow: none;
+        }
+
+        /* ── Debug panels ── */
+        #debug-panels {
+            display: flex;
+            flex-direction: row;
+            gap: 12px;
+            padding: 0 24px 24px;
+            width: 100%;
+            max-width: 908px;
+        }
+
+        .debug-section {
+            border: 2px solid #111;
+            border-radius: 10px;
+            padding: 10px;
+            background: #fff;
+            box-shadow: 4px 4px 0 #111;
+            flex-shrink: 0;
+        }
+
+        .debug-section h3 {
+            font-size: 0.68rem;
+            font-weight: 400;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        canvas.debug-canvas {
+            image-rendering: pixelated;
+            display: block;
+        }
+
+        #tileset-canvas {
+            width: 256px;
+            height: 384px;
+        }
+
+        #memmap-canvas {
+            width: 256px;
+            height: 256px;
+        }
+
+        #ilog-section {
+            min-width: 260px;
+        }
+
+        #ilog-pre {
+            font-family: 'Menlo', 'Consolas', monospace;
+            font-size: 0.65rem;
+            color: #444;
+            line-height: 1.5;
+            max-height: 384px;
+            overflow-y: auto;
+            white-space: pre;
+        }
+
+        #rom-input {
+            display: none;
+        }
+
+        .github-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.72rem;
+            opacity: 0.7;
+            transition: opacity 0.15s;
+        }
+        .github-link:hover {
+            opacity: 1;
+        }
+        .github-link svg {
+            width: 16px;
+            height: 16px;
+            fill: #333;
+        }
+
+        #title-panel {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 908px;
+            width: 100%;
+            padding: 0 0 6px;
+        }
+        #title-panel .title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="center-wrap">
+
+        <div id="title-panel">
+            <span class="title">🦐 Shrimp</span>
+            <a class="github-link" href="https://github.com/tedbauer/emulator" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 20.87c-3.37.73-4.08-1.63-4.08-1.63-.55-1.4-1.34-1.77-1.34-1.77-1.1-.75.08-.73.08-.73 1.21.08 1.85 1.24 1.85 1.24 1.08 1.84 2.83 1.31 3.52 1 .1-.78.42-1.31.76-1.61-2.69-.31-5.52-1.35-5.52-6a4.68 4.68 0 0 1 1.25-3.25 4.35 4.35 0 0 1 .12-3.22s1.02-.33 3.34 1.24a11.56 11.56 0 0 1 6.08 0c2.32-1.57 3.33-1.24 3.33-1.24a4.35 4.35 0 0 1 .12 3.22 4.68 4.68 0 0 1 1.25 3.25c0 4.66-2.84 5.69-5.54 5.99.44.38.82 1.12.82 2.26l-.01 3.35c0 .31.22.7.84.57A12 12 0 0 0 12 .3"/></svg>
+                GitHub
+            </a>
+        </div>
+
+        <div id="main-row">
+
+            <!-- Left sidebar -->
+            <div id="sidebar">
+                <button class="sidebar-btn" id="run-btn" disabled>▶&nbsp; Run</button>
+                <hr class="sidebar-sep" />
+                <button class="sidebar-btn" id="new-file-btn">＋&nbsp; New .s</button>
+                <div id="demo-wrap">
+                    <button class="sidebar-btn" id="demo-btn">🦐&nbsp; Demos ▾</button>
+                    <div id="demo-picker" class="hidden">
+                        <div class="picker-item" data-name="pong.s">🏓&nbsp; Pong</div>
+                        <div class="picker-item" data-name="platformer.s">🧍&nbsp; Platformer</div>
+                    </div>
+                </div>
+                <label class="sidebar-btn" for="rom-input">📂&nbsp; Load .gb</label>
+                <input type="file" id="rom-input" accept=".gb,.rom" />
+            </div>
+
+            <!-- Editor -->
+            <div id="editor-pane">
+                <div id="tab-bar-wrap">
+                    <span id="editor-logo">Shrimp editor</span>
+                    <div id="tab-bar"></div>
+                </div>
+                <div id="editor-body">
+                    <div id="line-numbers">1</div>
+                    <textarea id="code-editor" spellcheck="false"></textarea>
+                </div>
+                <div id="editor-empty" class="hidden">
+                    <div>📄</div>
+                    <div>Click <strong>＋ New</strong> or <strong>🦐 Demos ▾</strong><br/>to open a file</div>
+                </div>
+                <div id="compile-error"></div>
+            </div>
+
+            <!-- GB screen -->
+            <div id="screen-pane">
+                <div id="screen-wrap">
+                    <canvas id="screen" width="160" height="144"></canvas>
+                    <div id="screen-placeholder">
+                        <div class="ph-icon">🕹️</div>
+                        <div class="ph-text">
+                            Press <strong>▶ Run</strong> to compile &amp; play<br />
+                            or load a .gb ROM
+                        </div>
+                    </div>
+                </div>
+                <div id="controls-hint">
+                    <div class="ctrl-row">
+                        <span class="ctrl-key"><kbd>←</kbd><kbd>→</kbd> move</span>
+                        <span class="ctrl-key"><kbd>↑</kbd><kbd>↓</kbd> d-pad</span>
+                    </div>
+                    <div class="ctrl-row">
+                        <span class="ctrl-key"><kbd>Z</kbd> A button</span>
+                        <span class="ctrl-key"><kbd>X</kbd> B button</span>
+                    </div>
+                    <div class="ctrl-row">
+                        <span class="ctrl-key"><kbd>Enter</kbd> Start</span>
+                        <span class="ctrl-key"><kbd>⇧</kbd> Select</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Terminal -->
+        <div id="terminal-panel">
+            <div id="terminal-header">shrimp compiler — output</div>
+            <div id="terminal-output">
+                <span class="term-line term-dim">Waiting for compilation…</span>
+            </div>
+        </div>
+
+        <!-- Bottom bar -->
+        <div id="bottom-bar">
+            <div id="status">Ready.</div>
+            <div id="debug-toggles">
+                <button class="dbg-btn" data-target="tileset-section">Tileset</button>
+                <button class="dbg-btn" data-target="memmap-section">Memory</button>
+                <button class="dbg-btn" data-target="ilog-section">Instructions</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Debug panels outside center-wrap -->
+    <div id="debug-panels">
+        <div class="debug-section" id="tileset-section" style="display:none">
+            <h3>VRAM Tileset</h3>
+            <canvas id="tileset-canvas" class="debug-canvas" width="128" height="192"></canvas>
+        </div>
+        <div class="debug-section" id="memmap-section" style="display:none">
+            <h3>Memory Map</h3>
+            <canvas id="memmap-canvas" class="debug-canvas" width="256" height="256"></canvas>
+        </div>
+        <div class="debug-section" id="ilog-section" style="display:none">
+            <h3>Instructions</h3>
+            <pre id="ilog-pre"></pre>
+        </div>
+    </div>
+
+    <script type="module" src="./index.js"></script>
+</body>
+
+</html>

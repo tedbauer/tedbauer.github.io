@@ -26,5 +26,6 @@ template: index.html
 | | |
 | -------- | ------- |
 | [Pocket symphony](https://tedbauer.github.io/pocket-symphony.html)   | Pocket symphony is a whimsical music making program. |
+| [Shrimp](https://tedbauer.github.io/shrimp/)   | A browser-based Game Boy development environment with a custom scripting language. |
 
 </div>
