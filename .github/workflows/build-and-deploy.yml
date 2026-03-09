@@ -96,7 +96,6 @@ jobs:
         working-directory: emulator-repo
         run: |
           wasm-pack build compiler --target web --out-dir ../web/compiler_pkg -- --features wasm
-          mkdir -p bios && dd if=/dev/zero of=bios/bios.rom bs=256 count=1 2>/dev/null
           wasm-pack build --target web --out-dir web/pkg
 
       - name: Copy Shrimp web files
