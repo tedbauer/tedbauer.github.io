@@ -79,8 +79,37 @@ jobs:
       - name: Remove pushpin local clone
         run: rm -rf cloned-repo
 
-      # - name: Remove local clone of pocket symphony
-      #   run: rm -rf pocket-symphony-repo
+      - name: Clone Shrimp (emulator)
+        uses: actions/checkout@v3
+        with:
+          repository: tedbauer/emulator
+          ref: master
+          path: emulator-repo
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Add wasm32 target
+        run: rustup target add wasm32-unknown-unknown
+
+      - name: Build Shrimp WASMs
+        working-directory: emulator-repo
+        run: |
+          wasm-pack build compiler --target web --out-dir ../web/compiler_pkg -- --features wasm
+          wasm-pack build --target web --out-dir web/pkg
+
+      - name: Copy Shrimp web files
+        run: |
+          mkdir -p shrimp/compiler_pkg shrimp/pkg
+          cp emulator-repo/web/index.html shrimp/
+          cp emulator-repo/web/index.js shrimp/
+          cp emulator-repo/web/compiler_pkg/compiler.js shrimp/compiler_pkg/
+          cp emulator-repo/web/compiler_pkg/compiler_bg.wasm shrimp/compiler_pkg/
+          cp emulator-repo/web/pkg/emulator.js shrimp/pkg/
+          cp emulator-repo/web/pkg/emulator_bg.wasm shrimp/pkg/
+
+      - name: Remove emulator local clone
+        run: rm -rf emulator-repo
 
       - name: Commit changes and push
         run: |
