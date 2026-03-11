@@ -77,20 +77,55 @@ jobs:
           $PUSHPIN_PATH generate
 
       - name: Remove pushpin local clone
-        run: rm -rf cloned-repo
-
-      - name: Ensure pocket-symphony files are present
         run: |
-          echo "pocket-symphony.html present: $(test -f pocket-symphony.html && echo yes || echo MISSING)"
-          echo "main.js present: $(test -f main.js && echo yes || echo MISSING)"
-          echo "stylesheet.css present: $(test -f stylesheet.css && echo yes || echo MISSING)"
-          echo "dist/main.js present: $(test -f dist/main.js && echo yes || echo MISSING)"
+          cp $PUSHPIN_PATH /usr/local/bin/pushpin
+          PUSHPIN_PATH=/usr/local/bin/pushpin
+          echo "PUSHPIN_PATH=$PUSHPIN_PATH" >> $GITHUB_ENV
+          rm -rf cloned-repo
+
+      - name: Clone Shrimp (emulator)
+        uses: actions/checkout@v3
+        with:
+          repository: tedbauer/emulator
+          ref: master
+          path: emulator-repo
+
+      - name: Install wasm-pack
+        run: curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh
+
+      - name: Add wasm32 target
+        run: rustup target add wasm32-unknown-unknown
+
+      - name: Build Shrimp WASMs
+        working-directory: emulator-repo
+        run: |
+          wasm-pack build compiler --target web --out-dir ../web/compiler_pkg -- --features wasm
+          wasm-pack build --target web --out-dir web/pkg
+
+      - name: Copy Shrimp web files
+        run: |
+          mkdir -p shrimp/compiler_pkg shrimp/pkg
+          cp emulator-repo/web/index.html shrimp/
+          cp emulator-repo/web/index.js shrimp/
+          cp emulator-repo/web/compiler_pkg/compiler.js shrimp/compiler_pkg/
+          cp emulator-repo/web/compiler_pkg/compiler_bg.wasm shrimp/compiler_pkg/
+          cp emulator-repo/web/pkg/emulator.js shrimp/pkg/
+          cp emulator-repo/web/pkg/emulator_bg.wasm shrimp/pkg/
+
+      - name: Generate Shrimp docs with Pushpin
+        working-directory: emulator-repo/docs-site
+        run: |
+          $PUSHPIN_PATH generate
+          mkdir -p ../../shrimp/docs
+          cp -r docs/* ../../shrimp/docs/
+
+      - name: Remove emulator local clone
+        run: rm -rf emulator-repo
 
       - name: Commit changes and push
         run: |
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
-          git checkout -b gh-pages
-          git commit -m "Automated file generation"
+          git commit -m "Automated file generation" --allow-empty
           git push https://${{ secrets.ACCESS_TOKEN }}@github.com/tedbauer/tedbauer.github.io HEAD:gh-pages --force

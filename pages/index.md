@@ -7,7 +7,7 @@ template: index.html
 <div class="profile-picture-container">
     <img src="images/ted.jpeg" alt="Profile Picture" class="profile-picture">
     <div class="bio-content">
-        <p>Welcome to my lil site! I'm a software engineer based in NYC. Currently, I'm working at Google Labs. From 2022-2025, I worked on the Android operating system.</p>
+        <p>Hi! I'm a software engineer based in NYC. Currently, I'm working at Google Labs. From 2022-2025, I worked on the Android operating system.</p>
     </div>
 </div>
 
@@ -26,5 +26,6 @@ template: index.html
 | | |
 | -------- | ------- |
 | [Pocket symphony](https://tedbauer.github.io/pocket-symphony.html)   | Pocket symphony is a whimsical music making program. |
+| [Shrimp](https://tedbauer.github.io/shrimp/)   | A browser-based Game Boy development environment with a custom scripting language. |
 
 </div>
