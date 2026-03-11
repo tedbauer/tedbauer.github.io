@@ -79,8 +79,12 @@ jobs:
       - name: Remove pushpin local clone
         run: rm -rf cloned-repo
 
-      # - name: Remove local clone of pocket symphony
-      #   run: rm -rf pocket-symphony-repo
+      - name: Ensure pocket-symphony files are present
+        run: |
+          echo "pocket-symphony.html present: $(test -f pocket-symphony.html && echo yes || echo MISSING)"
+          echo "main.js present: $(test -f main.js && echo yes || echo MISSING)"
+          echo "stylesheet.css present: $(test -f stylesheet.css && echo yes || echo MISSING)"
+          echo "dist/main.js present: $(test -f dist/main.js && echo yes || echo MISSING)"
 
       - name: Commit changes and push
         run: |
