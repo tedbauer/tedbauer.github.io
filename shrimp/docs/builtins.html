@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>&lt;p&gt;Built-in Functions&lt;&#x2F;p&gt;
+ — Shrimp Docs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f8faf5;
+            color: #2d3a24;
+            line-height: 1.7;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: #eef2e6;
+            border-right: 1px solid #d6dcc8;
+            padding: 28px 20px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-title a {
+            color: #2d3a24;
+            text-decoration: none;
+        }
+
+        .sidebar-sub {
+            font-size: 0.72rem;
+            color: #7a8a6a;
+            margin-bottom: 22px;
+            letter-spacing: 0.04em;
+        }
+
+        .sidebar nav a {
+            display: block;
+            padding: 5px 10px;
+            margin: 1px 0;
+            color: #4a5a3a;
+            text-decoration: none;
+            font-size: 0.82rem;
+            border-radius: 5px;
+            transition: background 0.12s;
+        }
+
+        .sidebar nav a:hover {
+            background: #dde4d0;
+        }
+
+        .sidebar nav a.active {
+            background: #cdd8ba;
+            font-weight: 600;
+        }
+
+        .sidebar .try-link {
+            display: block;
+            margin-top: 20px;
+            padding: 7px 10px;
+            background: #5d7a3a;
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 5px;
+            text-align: center;
+            transition: background 0.12s;
+        }
+
+        .sidebar .try-link:hover {
+            background: #4a6a2a;
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            max-width: 720px;
+            padding: 40px 48px 80px;
+        }
+
+        .main h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1a2a12;
+        }
+
+        .main h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 32px 0 12px;
+            color: #2d3a24;
+            border-bottom: 1px solid #d6dcc8;
+            padding-bottom: 4px;
+        }
+
+        .main h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 24px 0 8px;
+            color: #3a4a2e;
+        }
+
+        .main p {
+            margin: 10px 0;
+        }
+
+        .main ul, .main ol {
+            margin: 10px 0 10px 24px;
+        }
+
+        .main li {
+            margin: 4px 0;
+        }
+
+        .main code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85em;
+            background: #e8ecde;
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+
+        .main pre {
+            margin: 14px 0;
+            background: #2d3a24;
+            color: #e8ecde;
+            padding: 16px 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+
+        .main pre code {
+            background: none;
+            padding: 0;
+            font-size: 0.82rem;
+            color: inherit;
+        }
+
+        .main table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 0.88rem;
+        }
+
+        .main th, .main td {
+            text-align: left;
+            padding: 8px 12px;
+            border: 1px solid #d6dcc8;
+        }
+
+        .main th {
+            background: #eef2e6;
+            font-weight: 600;
+        }
+
+        .main blockquote {
+            border-left: 3px solid #9aaa7e;
+            padding: 8px 16px;
+            margin: 14px 0;
+            background: #f0f4e8;
+            color: #4a5a3a;
+            font-size: 0.9rem;
+        }
+
+        .main a {
+            color: #3a7a2a;
+        }
+
+        .page-footer {
+            margin-top: 48px;
+            padding-top: 16px;
+            border-top: 1px solid #d6dcc8;
+        }
+
+        .page-footer a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #5d7a3a;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .page-footer a:hover {
+            color: #3a5a1a;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .layout { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid #d6dcc8;
+            }
+            .main { padding: 24px 20px 60px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-title"><a href="index.html">🦐 Shrimp</a></div>
+            <div class="sidebar-sub">Documentation</div>
+            <nav>
+                <a href="index.html">Overview</a>
+                <a href="getting-started.html">Getting Started</a>
+                <a href="syntax.html">Syntax</a>
+                <a href="types.html">Types</a>
+                <a href="tiles.html">Tiles</a>
+                <a href="builtins.html">Built-in Functions</a>
+                <a href="examples.html">Examples</a>
+            </nav>
+            <a class="try-link" href="../">▶ Try Shrimp IDE</a>
+        </aside>
+        <main class="main">
+            <h1>Built-in Functions</h1>
+<p>All built-ins are imported from the <code>core</code> module:</p>
+<pre><code>from core import pressed, just_pressed, set_sprite, set_bg_tile, set_scroll, Button
+</code></pre>
+<hr />
+<h2>Input</h2>
+<h3><code>pressed(button) -&gt; bool</code></h3>
+<p>Returns <code>true</code> if the button is <strong>currently held down</strong>.</p>
+<pre><code>if pressed(Button.Right):
+    x := x + 1
+</code></pre>
+<h3><code>just_pressed(button) -&gt; bool</code></h3>
+<p>Returns <code>true</code> only on the <strong>first frame</strong> the button is pressed. Useful for actions that should trigger once (like jumping).</p>
+<pre><code>if just_pressed(Button.A):
+    vy := -8
+</code></pre>
+<h3>Button enum</h3>
+<table><thead><tr><th>Value</th><th>Game Boy button</th></tr></thead><tbody>
+<tr><td><code>Button.Up</code></td><td>D-pad up</td></tr>
+<tr><td><code>Button.Down</code></td><td>D-pad down</td></tr>
+<tr><td><code>Button.Left</code></td><td>D-pad left</td></tr>
+<tr><td><code>Button.Right</code></td><td>D-pad right</td></tr>
+<tr><td><code>Button.A</code></td><td>A button</td></tr>
+<tr><td><code>Button.B</code></td><td>B button</td></tr>
+<tr><td><code>Button.Start</code></td><td>Start</td></tr>
+<tr><td><code>Button.Select</code></td><td>Select</td></tr>
+</tbody></table>
+<hr />
+<h2>Sprites</h2>
+<h3><code>set_sprite(index, x, y, tile)</code></h3>
+<p>Places a sprite on screen.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>index</code></td><td><code>u8</code></td><td>Sprite slot (0–39)</td></tr>
+<tr><td><code>x</code></td><td><code>u8</code></td><td>X position in pixels</td></tr>
+<tr><td><code>y</code></td><td><code>u8</code></td><td>Y position in pixels</td></tr>
+<tr><td><code>tile</code></td><td>tile name</td><td>Which tile graphic to use</td></tr>
+</tbody></table>
+<pre><code>set_sprite(0, 80, 72, player)
+</code></pre>
+<blockquote>
+<p>The Game Boy can display up to 40 sprites, with a limit of 10 per scanline. Sprite coordinates place the top-left corner of the 8×8 tile at (x, y). A sprite at (0, 0) is at the top-left of the screen.</p>
+</blockquote>
+<hr />
+<h2>Background</h2>
+<h3><code>set_bg_tile(tx, ty, tile)</code></h3>
+<p>Places a tile on the background layer.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>tx</code></td><td><code>u8</code></td><td>Tile column (0–31)</td></tr>
+<tr><td><code>ty</code></td><td><code>u8</code></td><td>Tile row (0–31)</td></tr>
+<tr><td><code>tile</code></td><td>tile name</td><td>Which tile graphic to draw</td></tr>
+</tbody></table>
+<pre><code># Fill row 16 with ground tiles
+let i = 0
+while i &lt; 20:
+    set_bg_tile(i, 16, ground)
+    i := i + 1
+</code></pre>
+<blockquote>
+<p>The background is a 32×32 grid of 8×8 tiles. The visible screen shows a 20×18 window into this grid (160×144 pixels). Use <code>set_scroll</code> to pan the view.</p>
+</blockquote>
+<hr />
+<h2>Scrolling</h2>
+<h3><code>set_scroll(sx, sy)</code></h3>
+<p>Sets the background scroll position.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>sx</code></td><td><code>u8</code></td><td>Horizontal scroll (pixels)</td></tr>
+<tr><td><code>sy</code></td><td><code>u8</code></td><td>Vertical scroll (pixels)</td></tr>
+</tbody></table>
+<pre><code>let scroll_x = 0
+
+on vblank:
+    scroll_x := scroll_x + 1
+    set_scroll(scroll_x, 0)
+</code></pre>
+<blockquote>
+<p>Scrolling wraps around at 256 pixels in both directions. The background layer scrolls independently of sprites.</p>
+</blockquote>
+<hr />
+<h2>Text</h2>
+<h3><code>print(tx, ty, "text")</code></h3>
+<p>Renders a string to the background layer using a <strong>built-in 8×8 ASCII font</strong> (96 characters, printable ASCII 32–127).</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>tx</code></td><td><code>u8</code></td><td>Starting tile column</td></tr>
+<tr><td><code>ty</code></td><td><code>u8</code></td><td>Tile row</td></tr>
+<tr><td><code>"text"</code></td><td>string literal</td><td>Text to display</td></tr>
+</tbody></table>
+<pre><code>print(2, 4, "HELLO WORLD!")
+print(3, 8, "Score: 0")
+</code></pre>
+<blockquote>
+<p>The built-in font is loaded automatically when <code>print()</code> is used. No tile definitions or imports are needed. The font occupies tiles after your user-defined tiles.</p>
+</blockquote>
+<hr />
+<h2>Large Sprites</h2>
+<h3><code>set_sprite_16(index, x, y, top_tile, bottom_tile)</code></h3>
+<p>Places a 16-pixel-tall sprite using two consecutive OAM slots.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>index</code></td><td><code>u8</code></td><td>Sprite slot for top half (bottom = index+1)</td></tr>
+<tr><td><code>x</code></td><td><code>u8</code></td><td>X position</td></tr>
+<tr><td><code>y</code></td><td><code>u8</code></td><td>Y position of top half</td></tr>
+<tr><td><code>top_tile</code></td><td>tile name</td><td>Top 8×8 tile</td></tr>
+<tr><td><code>bottom_tile</code></td><td>tile name</td><td>Bottom 8×8 tile</td></tr>
+</tbody></table>
+<pre><code>set_sprite_16(0, px, py, player_top, player_bottom)
+</code></pre>
+<blockquote>
+<p>Uses two standard sprite slots. The bottom half is drawn 8 pixels below the top.</p>
+</blockquote>
+<hr />
+<h2>Tile Expressions</h2>
+<p>Tile arguments in <code>set_sprite()</code>, <code>set_bg_tile()</code>, etc. accept <strong>any expression</strong>, not just tile names:</p>
+<pre><code># Tile name (resolves to its index)
+set_bg_tile(x, y, grass)
+
+# Arithmetic on tile indices
+set_bg_tile(x, y, grass + 1)
+
+# Numeric tile index directly
+set_bg_tile(x, y, 5)
+</code></pre>
+<p>This lets you compute tile indices at runtime for animation frames, tile variations, or font rendering.</p>
+<hr />
+<h2>Sound</h2>
+<h3><code>beep()</code></h3>
+<p>Plays a short blip sound (A5, ~880 Hz) with fast volume decay. Good for UI feedback.</p>
+<pre><code>beep()  # plays a quick blip
+</code></pre>
+<h3><code>play_tone(freq_lo, freq_hi)</code></h3>
+<p>Plays a tone on the Game Boy's Channel 1 square wave. Takes the raw 11-bit frequency register value split into low and high bytes.</p>
+<table><thead><tr><th>Param</th><th>Type</th><th>Description</th></tr></thead><tbody>
+<tr><td><code>freq_lo</code></td><td><code>u8</code></td><td>Low 8 bits of frequency register</td></tr>
+<tr><td><code>freq_hi</code></td><td><code>u8</code></td><td>High 3 bits of frequency register (0-7)</td></tr>
+</tbody></table>
+<pre><code>play_tone(0x6B, 0x07)   # ~880 Hz (A5)
+play_tone(0x0C, 0x06)   # ~262 Hz (C4)
+</code></pre>
+<p>The frequency formula is: <code>freq_register = 2048 - (131072 / Hz)</code>. Common note values:</p>
+<table><thead><tr><th>Note</th><th>Hz</th><th>freq_lo</th><th>freq_hi</th></tr></thead><tbody>
+<tr><td>C4</td><td>262</td><td>0x0C</td><td>0x06</td></tr>
+<tr><td>D4</td><td>294</td><td>0x42</td><td>0x06</td></tr>
+<tr><td>E4</td><td>330</td><td>0x73</td><td>0x06</td></tr>
+<tr><td>G4</td><td>392</td><td>0xB2</td><td>0x06</td></tr>
+<tr><td>A4</td><td>440</td><td>0xD6</td><td>0x06</td></tr>
+<tr><td>C5</td><td>523</td><td>0x05</td><td>0x07</td></tr>
+<tr><td>E5</td><td>659</td><td>0x4E</td><td>0x07</td></tr>
+<tr><td>A5</td><td>880</td><td>0x6B</td><td>0x07</td></tr>
+</tbody></table>
+
+            <div class="page-footer" style="display:flex;align-items:center;gap:10px">
+                <a href="https://github.com/tedbauer/emulator/edit/master/docs-site/pages&#x2F;docs&#x2F;builtins.md" target="_blank" rel="noopener">
+                    ✏️ Send a pull request
+                </a>
+                <span style="color:#b8c4a8">·</span>
+                <a href="https://polarbeardomestication.net/pushpin" target="_blank" rel="noopener" style="color:#7a8a6a;font-size:0.78rem">📌 Docs generated by pushpin</a>
+            </div>
+        </main>
+    </div>
+    <script>
+        hljs.highlightAll();
+        // Highlight current page in sidebar
+        const current = location.pathname.split('/').pop();
+        document.querySelectorAll('.sidebar nav a').forEach(a => {
+            if (a.getAttribute('href') === current) a.classList.add('active');
+        });
+    </script>
+</body>
+
+</html>

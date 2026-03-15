@@ -83,11 +83,9 @@ function getDataViewMemory0() {
     return cachedDataViewMemory0;
 }
 
-function passArray8ToWasm0(arg, malloc) {
-    const ptr = malloc(arg.length * 1, 1) >>> 0;
-    getUint8ArrayMemory0().set(arg, ptr / 1);
-    WASM_VECTOR_LEN = arg.length;
-    return ptr;
+function getArrayU8FromWasm0(ptr, len) {
+    ptr = ptr >>> 0;
+    return getUint8ArrayMemory0().subarray(ptr / 1, ptr / 1 + len);
 }
 
 let cachedFloat32ArrayMemory0 = null;
@@ -104,9 +102,11 @@ function getArrayF32FromWasm0(ptr, len) {
     return getFloat32ArrayMemory0().subarray(ptr / 4, ptr / 4 + len);
 }
 
-function getArrayU8FromWasm0(ptr, len) {
-    ptr = ptr >>> 0;
-    return getUint8ArrayMemory0().subarray(ptr / 1, ptr / 1 + len);
+function passArray8ToWasm0(arg, malloc) {
+    const ptr = malloc(arg.length * 1, 1) >>> 0;
+    getUint8ArrayMemory0().set(arg, ptr / 1);
+    WASM_VECTOR_LEN = arg.length;
+    return ptr;
 }
 
 const EmulatorFinalization = (typeof FinalizationRegistry === 'undefined')
@@ -129,62 +129,6 @@ export class Emulator {
         wasm.__wbg_emulator_free(ptr, 0);
     }
     /**
-     * Creates a new Emulator instance with the ROM bytes provided by JavaScript.
-     * @param {Uint8Array} rom_data
-     */
-    constructor(rom_data) {
-        const ptr0 = passArray8ToWasm0(rom_data, wasm.__wbindgen_malloc);
-        const len0 = WASM_VECTOR_LEN;
-        const ret = wasm.emulator_new(ptr0, len0);
-        this.__wbg_ptr = ret >>> 0;
-        EmulatorFinalization.register(this, this.__wbg_ptr, this);
-        return this;
-    }
-    /**
-     * Executes enough CPU and GPU cycles to produce one frame.
-     * Call this from a requestAnimationFrame loop in JavaScript.
-     */
-    tick() {
-        wasm.emulator_tick(this.__wbg_ptr);
-    }
-    /**
-     * Drains and returns accumulated stereo audio samples as f32 in [-1, 1].
-     * Interleaved: [L0, R0, L1, R1, ...]. Call this once per frame after tick().
-     * @returns {Float32Array}
-     */
-    get_audio_samples() {
-        const ret = wasm.emulator_get_audio_samples(this.__wbg_ptr);
-        var v1 = getArrayF32FromWasm0(ret[0], ret[1]).slice();
-        wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
-        return v1;
-    }
-    /**
-     * Returns the current frame as an RGBA byte vector (160×144×4 bytes).
-     * @returns {Uint8Array}
-     */
-    get_framebuffer() {
-        const ret = wasm.emulator_get_framebuffer(this.__wbg_ptr);
-        var v1 = getArrayU8FromWasm0(ret[0], ret[1]).slice();
-        wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
-        return v1;
-    }
-    /**
-     * Returns the instruction log as a newline-separated string (most-recent first).
-     * @returns {string}
-     */
-    get_instruction_log() {
-        let deferred1_0;
-        let deferred1_1;
-        try {
-            const ret = wasm.emulator_get_instruction_log(this.__wbg_ptr);
-            deferred1_0 = ret[0];
-            deferred1_1 = ret[1];
-            return getStringFromWasm0(ret[0], ret[1]);
-        } finally {
-            wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
-        }
-    }
-    /**
      * Returns the VRAM tileset as an RGBA byte vector (128×192 px, 384 tiles).
      * @returns {Uint8Array}
      */
@@ -205,13 +149,60 @@ export class Emulator {
         return v1;
     }
     /**
-     * Called by JavaScript on keydown. key_code is the browser KeyboardEvent.code value.
-     * @param {string} key_code
+     * Returns the current frame as an RGBA byte vector (160×144×4 bytes).
+     * @returns {Uint8Array}
      */
-    key_down(key_code) {
-        const ptr0 = passStringToWasm0(key_code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    get_framebuffer() {
+        const ret = wasm.emulator_get_framebuffer(this.__wbg_ptr);
+        var v1 = getArrayU8FromWasm0(ret[0], ret[1]).slice();
+        wasm.__wbindgen_free(ret[0], ret[1] * 1, 1);
+        return v1;
+    }
+    /**
+     * Drains and returns accumulated stereo audio samples as f32 in [-1, 1].
+     * Interleaved: [L0, R0, L1, R1, ...]. Call this once per frame after tick().
+     * @returns {Float32Array}
+     */
+    get_audio_samples() {
+        const ret = wasm.emulator_get_audio_samples(this.__wbg_ptr);
+        var v1 = getArrayF32FromWasm0(ret[0], ret[1]).slice();
+        wasm.__wbindgen_free(ret[0], ret[1] * 4, 4);
+        return v1;
+    }
+    /**
+     * Returns the instruction log as a newline-separated string (most-recent first).
+     * @returns {string}
+     */
+    get_instruction_log() {
+        let deferred1_0;
+        let deferred1_1;
+        try {
+            const ret = wasm.emulator_get_instruction_log(this.__wbg_ptr);
+            deferred1_0 = ret[0];
+            deferred1_1 = ret[1];
+            return getStringFromWasm0(ret[0], ret[1]);
+        } finally {
+            wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
+        }
+    }
+    /**
+     * Creates a new Emulator instance with the ROM bytes provided by JavaScript.
+     * @param {Uint8Array} rom_data
+     */
+    constructor(rom_data) {
+        const ptr0 = passArray8ToWasm0(rom_data, wasm.__wbindgen_malloc);
         const len0 = WASM_VECTOR_LEN;
-        wasm.emulator_key_down(this.__wbg_ptr, ptr0, len0);
+        const ret = wasm.emulator_new(ptr0, len0);
+        this.__wbg_ptr = ret >>> 0;
+        EmulatorFinalization.register(this, this.__wbg_ptr, this);
+        return this;
+    }
+    /**
+     * Executes enough CPU and GPU cycles to produce one frame.
+     * Call this from a requestAnimationFrame loop in JavaScript.
+     */
+    tick() {
+        wasm.emulator_tick(this.__wbg_ptr);
     }
     /**
      * Called by JavaScript on keyup.
@@ -221,6 +212,15 @@ export class Emulator {
         const ptr0 = passStringToWasm0(key_code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
         const len0 = WASM_VECTOR_LEN;
         wasm.emulator_key_up(this.__wbg_ptr, ptr0, len0);
+    }
+    /**
+     * Called by JavaScript on keydown. key_code is the browser KeyboardEvent.code value.
+     * @param {string} key_code
+     */
+    key_down(key_code) {
+        const ptr0 = passStringToWasm0(key_code, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+        const len0 = WASM_VECTOR_LEN;
+        wasm.emulator_key_down(this.__wbg_ptr, ptr0, len0);
     }
 }
 

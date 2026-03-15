@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>&lt;p&gt;Getting Started&lt;&#x2F;p&gt;
+ — Shrimp Docs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f8faf5;
+            color: #2d3a24;
+            line-height: 1.7;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: #eef2e6;
+            border-right: 1px solid #d6dcc8;
+            padding: 28px 20px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-title a {
+            color: #2d3a24;
+            text-decoration: none;
+        }
+
+        .sidebar-sub {
+            font-size: 0.72rem;
+            color: #7a8a6a;
+            margin-bottom: 22px;
+            letter-spacing: 0.04em;
+        }
+
+        .sidebar nav a {
+            display: block;
+            padding: 5px 10px;
+            margin: 1px 0;
+            color: #4a5a3a;
+            text-decoration: none;
+            font-size: 0.82rem;
+            border-radius: 5px;
+            transition: background 0.12s;
+        }
+
+        .sidebar nav a:hover {
+            background: #dde4d0;
+        }
+
+        .sidebar nav a.active {
+            background: #cdd8ba;
+            font-weight: 600;
+        }
+
+        .sidebar .try-link {
+            display: block;
+            margin-top: 20px;
+            padding: 7px 10px;
+            background: #5d7a3a;
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 5px;
+            text-align: center;
+            transition: background 0.12s;
+        }
+
+        .sidebar .try-link:hover {
+            background: #4a6a2a;
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            max-width: 720px;
+            padding: 40px 48px 80px;
+        }
+
+        .main h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1a2a12;
+        }
+
+        .main h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 32px 0 12px;
+            color: #2d3a24;
+            border-bottom: 1px solid #d6dcc8;
+            padding-bottom: 4px;
+        }
+
+        .main h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 24px 0 8px;
+            color: #3a4a2e;
+        }
+
+        .main p {
+            margin: 10px 0;
+        }
+
+        .main ul, .main ol {
+            margin: 10px 0 10px 24px;
+        }
+
+        .main li {
+            margin: 4px 0;
+        }
+
+        .main code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85em;
+            background: #e8ecde;
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+
+        .main pre {
+            margin: 14px 0;
+            background: #2d3a24;
+            color: #e8ecde;
+            padding: 16px 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+
+        .main pre code {
+            background: none;
+            padding: 0;
+            font-size: 0.82rem;
+            color: inherit;
+        }
+
+        .main table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 0.88rem;
+        }
+
+        .main th, .main td {
+            text-align: left;
+            padding: 8px 12px;
+            border: 1px solid #d6dcc8;
+        }
+
+        .main th {
+            background: #eef2e6;
+            font-weight: 600;
+        }
+
+        .main blockquote {
+            border-left: 3px solid #9aaa7e;
+            padding: 8px 16px;
+            margin: 14px 0;
+            background: #f0f4e8;
+            color: #4a5a3a;
+            font-size: 0.9rem;
+        }
+
+        .main a {
+            color: #3a7a2a;
+        }
+
+        .page-footer {
+            margin-top: 48px;
+            padding-top: 16px;
+            border-top: 1px solid #d6dcc8;
+        }
+
+        .page-footer a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #5d7a3a;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .page-footer a:hover {
+            color: #3a5a1a;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .layout { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid #d6dcc8;
+            }
+            .main { padding: 24px 20px 60px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-title"><a href="index.html">🦐 Shrimp</a></div>
+            <div class="sidebar-sub">Documentation</div>
+            <nav>
+                <a href="index.html">Overview</a>
+                <a href="getting-started.html">Getting Started</a>
+                <a href="syntax.html">Syntax</a>
+                <a href="types.html">Types</a>
+                <a href="tiles.html">Tiles</a>
+                <a href="builtins.html">Built-in Functions</a>
+                <a href="examples.html">Examples</a>
+            </nav>
+            <a class="try-link" href="../">▶ Try Shrimp IDE</a>
+        </aside>
+        <main class="main">
+            <h1>Getting Started</h1>
+<h2>Using the browser IDE</h2>
+<p>The fastest way to try Shrimp is the online IDE at <a href="https://polarbeardomestication.net/shrimp/">polarbeardomestication.net/shrimp</a>.</p>
+<ol>
+<li>Open the IDE</li>
+<li>Write your code in the editor (or pick a demo from the 🦐 <strong>Demos</strong> menu)</li>
+<li>Click <strong>▶ Run</strong></li>
+<li>Your game compiles and runs instantly in the emulator</li>
+</ol>
+<h3>Controls</h3>
+<table><thead><tr><th>Key</th><th>Game Boy</th></tr></thead><tbody>
+<tr><td>Arrow keys</td><td>D-pad</td></tr>
+<tr><td><code>Z</code></td><td>A button</td></tr>
+<tr><td><code>X</code></td><td>B button</td></tr>
+<tr><td><code>Enter</code></td><td>Start</td></tr>
+<tr><td><code>Shift</code></td><td>Select</td></tr>
+</tbody></table>
+<h2>Using the CLI</h2>
+<p>You can also compile Shrimp programs from the command line.</p>
+<h3>Build the compiler</h3>
+<pre><code>cargo build -p compiler --release
+</code></pre>
+<h3>Compile a program</h3>
+<pre><code>./target/release/shrimp games/pong.s -o games/pong.gb
+</code></pre>
+<h3>Run it</h3>
+<p>Load the <code>.gb</code> file in any Game Boy emulator, or use the built-in web emulator.</p>
+<h2>Program structure</h2>
+<p>Every Shrimp program follows this structure:</p>
+<pre><code>from core import pressed, set_sprite, Button
+
+tile my_tile:
+    ........
+    .333333.
+    .3....3.
+    .3....3.
+    .3....3.
+    .3....3.
+    .333333.
+    ........
+
+let x = 80
+let y = 72
+
+init:
+    set_sprite(0, x, y, my_tile)
+
+on vblank:
+    # game logic runs here, ~60 times per second
+    set_sprite(0, x, y, my_tile)
+</code></pre>
+<h3>Key sections</h3>
+<ul>
+<li><strong>Imports</strong> — bring in built-in functions from <code>core</code></li>
+<li><strong>Tiles</strong> — define 8×8 pixel art inline</li>
+<li><strong>Constants</strong> — compile-time values with <code>const NAME = value</code></li>
+<li><strong>Global variables</strong> — state that persists across frames</li>
+<li><strong><code>init:</code></strong> — runs once at startup</li>
+<li><strong><code>on vblank:</code></strong> — runs every frame (~59.7 fps)</li>
+</ul>
+
+            <div class="page-footer" style="display:flex;align-items:center;gap:10px">
+                <a href="https://github.com/tedbauer/emulator/edit/master/docs-site/pages&#x2F;docs&#x2F;getting-started.md" target="_blank" rel="noopener">
+                    ✏️ Send a pull request
+                </a>
+                <span style="color:#b8c4a8">·</span>
+                <a href="https://polarbeardomestication.net/pushpin" target="_blank" rel="noopener" style="color:#7a8a6a;font-size:0.78rem">📌 Docs generated by pushpin</a>
+            </div>
+        </main>
+    </div>
+    <script>
+        hljs.highlightAll();
+        // Highlight current page in sidebar
+        const current = location.pathname.split('/').pop();
+        document.querySelectorAll('.sidebar nav a').forEach(a => {
+            if (a.getAttribute('href') === current) a.classList.add('active');
+        });
+    </script>
+</body>
+
+</html>
