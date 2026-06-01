@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>{{title}}</title>
+    <title>Notes2</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/post.css">
@@ -19,11 +19,37 @@
                 </a>
 
                 <div class="content">
-                    {{ content | safe }}
+                    <h1>Building a mult module for a modular synthesizer</h1>
+<h2>Introduction</h2>
+<p>In a <a href="https://en.wikipedia.org/wiki/Modular_synthesizer">modular synthesizer</a>, a multiplier module lets one signal control multiple parameters simultaneously. For example, a sine wave could control the both the cutoff of a filter and the pitch of a VCO. A clock signal could control the tempo of two sequencers.</p>
+<p>With the help of a friendly and talented office floormate, and an <a href="https://www.youtube.com/watch?v=sNT0mTsaOMg">instructive and cool YouTube video</a>, I built a DIY one for my modular synthesizer.</p>
+<table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td><img src="../images/finalbuild.jpeg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td><td></td></tr>
+</tbody></table>
+<p>You can plug a signal into any one of the jacks, and then the three remaining jacks become outputs that you can use to control other signals in the synthesizer.</p>
+<h2>Design and prototype</h2>
+<p>This design has a short parts list:</p>
+<ul>
+<li>3 audio jacks</li>
+<li>Wires</li>
+<li>Front panel</li>
+<li><a href="https://www.dymo.com/">Dymo</a> label maker</li>
+</ul>
+<p>The audio jacks each have three terminals: a ground terminal, and a left and right audio terminal. I wired together the ground terminals of each jack, and then the left and right terminals, first prototyping on a piece of cardboard:</p>
+<table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td><img src="../images/cardboardback.jpeg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td><td><img src="../../images/cardboardfront.jpeg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td></tr>
+</tbody></table>
+<h2>Final build</h2>
+<p>Then, my wonderful office floormate gave me a piece of aluminum to use as a front panel to replace the cardboard. It fit perfectly on the left side of my modular synth. We measured four equidistant drilling points on the panel, and used a drill press to drill 1/8th inch holes for the jacks. We also brushed the steel with a brush attachment on the press, which gave the panel a smooth look.</p>
+<table><thead><tr><th></th><th></th></tr></thead><tbody>
+<tr><td><img src="../images/brushed_alum1.jpg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td><td><img src="../images/brushed_alum2.jpg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td></tr>
+<tr><td><img src="../images/brushed_alum3.jpg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td><td><img src="../images/brushed_alum4.jpg" alt="&quot;a picture of the mult prototyped on cardboard&quot;" /></td></tr>
+</tbody></table>
+
                 </div>
 
                 <div class="post-actions">
-                    <a href="https://github.com/tedbauer/tedbauer.github.io/edit/main/pages/{{path}}" target="_blank">
+                    <a href="https://github.com/tedbauer/tedbauer.github.io/edit/main/pages/pages&#x2F;posts&#x2F;notes2.md" target="_blank">
                         <img src="../images/pencil.png" /> fix a typo
                     </a>
                     <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">

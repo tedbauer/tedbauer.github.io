@@ -10,7 +10,7 @@ Recently in my day to day, I have been `cd`ing around deeply nested directories,
 
 Here is a short demo of `up` in action:
 
-[![asciicast](https://asciinema.org/a/fdSxD29IhP6LmXuGQpbm27sNf.svg)](https://asciinema.org/a/fdSxD29IhP6LmXuGQpbm27sNf)
+<div id="asciicast-container"><script src="https://asciinema.org/a/fdSxD29IhP6LmXuGQpbm27sNf.js" id="asciicast-fdSxD29IhP6LmXuGQpbm27sNf" async></script></div>
 
 You can type `up d`, where `d` is either a directory above you, or a prefix of a directory above you, and you will be `cd`'d up to that directory.
 

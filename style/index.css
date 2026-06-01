@@ -1,135 +1,332 @@
-body {
-    background-color: #edfff3;
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&display=swap');
+
+/* ===== Base ===== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-.gh-link {
+body {
+    background-color: #fff;
+    color: #2a2a2a;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 16px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ===== Layout ===== */
+.toplevel {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 80px 40px 60px 12vw;
 }
 
 .main-container {
-    width: 480px;
+    width: 100%;
+    max-width: 520px;
 }
-
-.footer {
-    margin-top: -15px;
-    font-family: 'Merriweather', serif;
-    font-size: 80%;
-    padding-left: 25px;
-    padding-right: 25px;
-    display: flex;
-    /* Make it a flex container */
-    justify-content: space-between;
-    /* Push items to opposite ends */
-    align-items: center;
-}
-
-.footer-left {}
-
-.footer-right {}
 
 .card {
-    background-color: white;
-    margin: 20px;
-    padding: 25px;
-    position: relative;
-
-    border-radius: 20px;
-    border-width: 1px;
-    border-color: black;
-    border-style: solid;
-
-    box-shadow: black 5px 5px;
-
-    font-family: 'Merriweather', serif;
-    font-size: 80%;
+    background: none;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 15px;
 }
 
-@media only screen and (max-width: 500px) {
-    .toplevel {
-        flex-direction: column;
-        padding: 0px;
-    }
-
-    .main-container {
-        width: 137%;
-        margin-top: -65px;
-        padding: 0px;
-    }
+/* ===== Name — big, confident ===== */
+h1 {
+    font-family: 'Merriweather', Georgia, serif;
+    font-weight: 900;
+    font-size: 2.6rem;
+    color: #1a1a1a;
+    line-height: 1.1;
+    margin-bottom: 0;
+    letter-spacing: -0.03em;
 }
 
-.toplevel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 50px;
-    position: relative;
-    flex-direction: column;
-}
-
-.back-button {
-    padding: 3px;
-    width: 80px;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
-}
-
-.back-button img {
-    padding: 5px;
-}
-
-.back-button:hover {
-    background-color: dodgerblue;
-    background-color: lightblue;
-    transform: scale(1.05);
-}
-
-a {
-    padding: 10px;
-    border-radius: 20px;
-    display: flex;
-    text-decoration: none;
-    font-weight: lighter;
-    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
-}
-
-a:hover {
-    background-color: dodgerblue;
-    background-color: lightblue;
-    transform: scale(1.05);
-}
-
-.content img {
-    width: 90%;
-    object-fit: contain;
-    border-style: solid;
-    border-width: 1px;
-}
-
+/* ===== Profile Section ===== */
 .profile-picture-container {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 25px;
-    margin: 20px 0 30px 0;
+    align-items: flex-start;
+    gap: 22px;
+    margin: 28px 0 52px 0;
 }
 
 .profile-picture {
-    width: 120px;
-    height: 120px;
+    width: 72px;
+    height: 72px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid black;
     flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.profile-picture:hover {
+    transform: scale(1.08);
 }
 
 .bio-content {
     flex: 1;
+    padding-top: 4px;
 }
 
 .bio-content p {
     margin: 0;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.7;
+    font-weight: 400;
+}
+
+.bio-content .project-links {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.8;
+}
+
+.bio-content .project-links a {
+    color: #d96b3a;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(217, 107, 58, 0.25);
+    transition: border-color 0.15s ease;
+}
+
+.bio-content .project-links a:hover {
+    border-bottom-color: #d96b3a;
+}
+
+/* ===== Section Labels ===== */
+.section-label {
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.92rem;
+    font-weight: 900;
+    color: #1a1a1a;
+    display: block;
+    margin-bottom: 16px;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.section-label img {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    vertical-align: middle;
+}
+
+/* ===== Posts List ===== */
+.posts-list {
+    margin-bottom: 48px;
+}
+
+/* ===== Post List (generated table) ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+table th,
+table td {
+    padding: 0;
+    border: none;
+    font-weight: normal;
+    text-align: left;
+    vertical-align: baseline;
+}
+
+table tr {
+    display: flex;
+    align-items: baseline;
+    padding: 10px 0;
+    gap: 20px;
+}
+
+/* Date column */
+table tr th:first-child,
+table tr td:first-child {
+    flex-shrink: 0;
+    width: 78px;
+}
+
+table tr th:first-child div,
+table tr td:first-child div {
+    color: #999 !important;
+    font-weight: 300 !important;
+    font-size: 0.82rem;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Title column */
+table tr th:last-child,
+table tr td:last-child {
+    flex: 1;
+}
+
+/* Post links */
+a.index-link {
+    color: #2a2a2a;
+    text-decoration: none;
+    padding: 0;
+    display: inline;
+    font-weight: 400;
+    font-size: 0.95rem;
+    border-radius: 0;
+    transition: color 0.15s ease;
+    border-bottom: 1px solid transparent;
+}
+
+a.index-link:hover {
+    color: #d96b3a;
+    border-bottom-color: #d96b3a;
+    background: none;
+    transform: none;
+}
+
+/* ===== Project Tiles ===== */
+.projects-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 0;
+    align-items: flex-start;
+}
+
+.project-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: #333;
+    text-decoration: none;
+    height: 52px;
+    padding: 0 20px;
+    border: 1.5px solid #ddd;
+    border-radius: 8px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+    background: none;
+    cursor: pointer;
+}
+
+.project-tile:hover {
+    border-color: #d96b3a;
+    color: #333;
+    transform: translateY(-3px);
+}
+
+.project-tile:nth-child(1) { background: #fce4ec; border-color: #f8bbd0; }
+.project-tile:nth-child(2) { background: #e8f5e9; border-color: #c8e6c9; height: 44px; }
+.project-tile:nth-child(3) { background: #e3f2fd; border-color: #bbdefb; height: 48px; }
+
+/* ===== General Links ===== */
+a {
+    color: #2a2a2a;
+    text-decoration: none;
+    padding: 0;
+    display: inline;
+    border-radius: 0;
+    transition: color 0.15s ease;
+    font-weight: 400;
+}
+
+a:hover {
+    color: #d96b3a;
+    background: none;
+    transform: none;
+}
+
+/* ===== Links Bar ===== */
+.links-bar {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    margin-bottom: 36px;
+    align-items: center;
+}
+
+.link-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #999;
+    font-size: 0.78rem;
+    font-weight: 400;
+    transition: color 0.2s ease;
+}
+
+.link-item:hover {
+    color: #d96b3a;
+    background: none;
+    transform: none;
+}
+
+/* ===== Footer ===== */
+.footer {
+    margin-top: 20px;
+    padding: 16px 0;
+    font-family: 'Merriweather', Georgia, serif;
+    font-size: 0.62rem;
+    color: #ccc;
+}
+
+.footer a {
+    color: #ccc;
+    padding: 0;
+    font-size: 0.62rem;
+    transition: color 0.15s ease;
+}
+
+.footer a:hover {
+    color: #d96b3a;
+    background: none;
+    transform: none;
+}
+
+.footer-left {
+    font-weight: 400;
+}
+
+/* ===== Responsive ===== */
+@media only screen and (max-width: 768px) {
+    .toplevel {
+        padding: 48px 24px 40px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    .profile-picture-container {
+        gap: 16px;
+    }
+
+    .profile-picture {
+        width: 60px;
+        height: 60px;
+    }
+
+    table tr {
+        flex-direction: column;
+        gap: 2px;
+        padding: 8px 0;
+    }
+
+    table tr th:first-child,
+    table tr td:first-child {
+        width: auto;
+    }
+
+    .projects-grid {
+        gap: 8px;
+    }
 }
