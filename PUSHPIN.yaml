@@ -1,19 +1,15 @@
-homepage: home.md
+homepage: index.md
 
 posts:
   - title: 'Understanding git a lil better'
-    date: 3-30-2025
+    date: '3-30-2025'
     path: posts/notes3.md
-    name: post3
+    name: notes3
   - title: 'Building a mult module for a modular synthesizer'
-    date: 10-05-2024
+    date: '10-05-2024'
     path: posts/notes2.md
-    name: post2
+    name: notes2
   - title: 'Making a small tool to jump multiple directory levels quickly'
-    date: 05-05-2024
+    date: '05-05-2024'
     path: posts/notes1.md
-    name: post1
-
-
-
-
+    name: notes1
