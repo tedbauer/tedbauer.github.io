@@ -119,10 +119,6 @@ source /usr/lib/up.sh
         </div>
     </div>
 
-    <a href="#" class="back-to-top" id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
-        <img src="../images/up.png" width="18" height="18" />
-    </a>
-
     <script>
         hljs.highlightAll();
 
@@ -162,15 +158,8 @@ source /usr/lib/up.sh
                 });
             }
 
-            // Back to top button visibility
-            const backToTop = document.getElementById('back-to-top');
-            function updateBackToTop() {
-                backToTop.classList.toggle('visible', window.scrollY > 400);
-            }
-
             window.addEventListener('scroll', function() {
                 updateActive();
-                updateBackToTop();
             }, { passive: true });
             updateActive();
             // Make content images clickable to open full-size

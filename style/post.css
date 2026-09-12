@@ -124,13 +124,6 @@ body {
     image-rendering: crisp-edges;
 }
 
-.back-to-top img {
-    width: 16px;
-    height: auto;
-    image-rendering: pixelated;
-    image-rendering: crisp-edges;
-}
-
 /* ===== Table of Contents Sidebar ===== */
 .toc-sidebar {
     position: sticky;
@@ -376,39 +369,6 @@ body {
 }
 
 .post-actions a:hover {
-    background: rgba(217, 107, 58, 0.18);
-    color: #2a2a2a;
-    border-color: #d96b3a;
-}
-
-/* ===== Back to Top ===== */
-.back-to-top {
-    position: fixed;
-    bottom: 28px;
-    right: 28px;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: #faf6f1;
-    border: 1.5px solid #e5e0d8;
-    color: #bbb;
-    font-size: 0.8rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-    z-index: 100;
-}
-
-.back-to-top.visible {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.back-to-top:hover {
     background: rgba(217, 107, 58, 0.18);
     color: #2a2a2a;
     border-color: #d96b3a;
