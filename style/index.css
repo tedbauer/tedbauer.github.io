@@ -66,11 +66,6 @@ h1 {
     border: 1px solid #000;
     object-fit: cover;
     flex-shrink: 0;
-    transition: transform 0.3s ease;
-}
-
-.profile-picture:hover {
-    transform: scale(1.08);
 }
 
 .bio-content {
@@ -97,11 +92,11 @@ h1 {
     color: #d96b3a;
     text-decoration: none;
     border-bottom: 1px solid rgba(217, 107, 58, 0.25);
-    transition: border-color 0.15s ease;
 }
 
 .bio-content .project-links a:hover {
-    border-bottom-color: #d96b3a;
+    background: rgba(217, 107, 58, 0.18);
+    color: #2a2a2a;
 }
 
 /* ===== Section Labels ===== */
@@ -180,15 +175,12 @@ a.index-link {
     font-weight: 400;
     font-size: 0.95rem;
     border-radius: 0;
-    transition: color 0.15s ease;
     border-bottom: 1px solid transparent;
 }
 
 a.index-link:hover {
-    color: #d96b3a;
-    border-bottom-color: #d96b3a;
-    background: none;
-    transform: none;
+    background: rgba(217, 107, 58, 0.18);
+    color: #2a2a2a;
 }
 
 /* ===== Project Tiles ===== */
@@ -235,14 +227,12 @@ a {
     padding: 0;
     display: inline;
     border-radius: 0;
-    transition: color 0.15s ease;
     font-weight: 400;
 }
 
 a:hover {
-    color: #d96b3a;
-    background: none;
-    transform: none;
+    background: rgba(217, 107, 58, 0.18);
+    color: #2a2a2a;
 }
 
 /* ===== Links Bar ===== */
@@ -261,13 +251,11 @@ a:hover {
     color: #999;
     font-size: 0.78rem;
     font-weight: 400;
-    transition: color 0.2s ease;
 }
 
 .link-item:hover {
-    color: #d96b3a;
-    background: none;
-    transform: none;
+    background: rgba(217, 107, 58, 0.18);
+    color: #2a2a2a;
 }
 
 /* ===== Footer ===== */
@@ -283,13 +271,11 @@ a:hover {
     color: #ccc;
     padding: 0;
     font-size: 0.62rem;
-    transition: color 0.15s ease;
 }
 
 .footer a:hover {
-    color: #d96b3a;
-    background: none;
-    transform: none;
+    background: rgba(217, 107, 58, 0.18);
+    color: #2a2a2a;
 }
 
 .footer-left {
