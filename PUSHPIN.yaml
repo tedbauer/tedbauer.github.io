@@ -1,7 +1,7 @@
 homepage: index.md
 
 posts:
-  - title: 'Undoing a bad git commit --amend with reflog and reset'
+  - title: 'Undoing a bad <code>git commit --amend</code> with <code>reflog</code> and <code>reset</code>'
     date: '3-30-2025'
     path: posts/notes3.md
     name: notes3
