@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>&lt;p&gt;Syntax&lt;&#x2F;p&gt;
+ — Shrimp Docs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f8faf5;
+            color: #2d3a24;
+            line-height: 1.7;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            background: #eef2e6;
+            border-right: 1px solid #d6dcc8;
+            padding: 28px 20px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .sidebar-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .sidebar-title a {
+            color: #2d3a24;
+            text-decoration: none;
+        }
+
+        .sidebar-sub {
+            font-size: 0.72rem;
+            color: #7a8a6a;
+            margin-bottom: 22px;
+            letter-spacing: 0.04em;
+        }
+
+        .sidebar nav a {
+            display: block;
+            padding: 5px 10px;
+            margin: 1px 0;
+            color: #4a5a3a;
+            text-decoration: none;
+            font-size: 0.82rem;
+            border-radius: 5px;
+            transition: background 0.12s;
+        }
+
+        .sidebar nav a:hover {
+            background: #dde4d0;
+        }
+
+        .sidebar nav a.active {
+            background: #cdd8ba;
+            font-weight: 600;
+        }
+
+        .sidebar .try-link {
+            display: block;
+            margin-top: 20px;
+            padding: 7px 10px;
+            background: #5d7a3a;
+            color: white;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border-radius: 5px;
+            text-align: center;
+            transition: background 0.12s;
+        }
+
+        .sidebar .try-link:hover {
+            background: #4a6a2a;
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            max-width: 720px;
+            padding: 40px 48px 80px;
+        }
+
+        .main h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #1a2a12;
+        }
+
+        .main h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 32px 0 12px;
+            color: #2d3a24;
+            border-bottom: 1px solid #d6dcc8;
+            padding-bottom: 4px;
+        }
+
+        .main h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 24px 0 8px;
+            color: #3a4a2e;
+        }
+
+        .main p {
+            margin: 10px 0;
+        }
+
+        .main ul, .main ol {
+            margin: 10px 0 10px 24px;
+        }
+
+        .main li {
+            margin: 4px 0;
+        }
+
+        .main code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85em;
+            background: #e8ecde;
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+
+        .main pre {
+            margin: 14px 0;
+            background: #2d3a24;
+            color: #e8ecde;
+            padding: 16px 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            line-height: 1.5;
+        }
+
+        .main pre code {
+            background: none;
+            padding: 0;
+            font-size: 0.82rem;
+            color: inherit;
+        }
+
+        .main table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 14px 0;
+            font-size: 0.88rem;
+        }
+
+        .main th, .main td {
+            text-align: left;
+            padding: 8px 12px;
+            border: 1px solid #d6dcc8;
+        }
+
+        .main th {
+            background: #eef2e6;
+            font-weight: 600;
+        }
+
+        .main blockquote {
+            border-left: 3px solid #9aaa7e;
+            padding: 8px 16px;
+            margin: 14px 0;
+            background: #f0f4e8;
+            color: #4a5a3a;
+            font-size: 0.9rem;
+        }
+
+        .main a {
+            color: #3a7a2a;
+        }
+
+        .page-footer {
+            margin-top: 48px;
+            padding-top: 16px;
+            border-top: 1px solid #d6dcc8;
+        }
+
+        .page-footer a {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #5d7a3a;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .page-footer a:hover {
+            color: #3a5a1a;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .layout { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid #d6dcc8;
+            }
+            .main { padding: 24px 20px 60px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="sidebar-title"><a href="index.html">🦐 Shrimp</a></div>
+            <div class="sidebar-sub">Documentation</div>
+            <nav>
+                <a href="index.html">Overview</a>
+                <a href="getting-started.html">Getting Started</a>
+                <a href="syntax.html">Syntax</a>
+                <a href="types.html">Types</a>
+                <a href="tiles.html">Tiles</a>
+                <a href="builtins.html">Built-in Functions</a>
+                <a href="examples.html">Examples</a>
+            </nav>
+            <a class="try-link" href="../">▶ Try Shrimp IDE</a>
+        </aside>
+        <main class="main">
+            <h1>Syntax Reference</h1>
+<p>Shrimp uses indentation-based blocks (like Python). Statements are separated by newlines. Comments start with <code>#</code>.</p>
+<h2>Imports</h2>
+<pre><code>from core import pressed, set_sprite, set_bg_tile, Button
+</code></pre>
+<p>The only module is <code>core</code>, which provides all built-in functions and the <code>Button</code> enum.</p>
+<h2>Variables</h2>
+<h3>Declaration</h3>
+<pre><code>let x = 10           # u8, inferred
+let speed: i8 = -2   # explicit signed type
+let flag: bool = true
+</code></pre>
+<p>Variables are always global. Type is inferred from the initializer unless explicitly annotated.</p>
+<h2>Constants</h2>
+<pre><code>const MAX_SPEED = 4
+const SCENE_TOWN = 0
+const TILE_SIZE = 8
+</code></pre>
+<p>Constants are inlined at compile time — no RAM is used. They must be integer literals. Use constants for magic numbers, state machine values, and configuration.</p>
+<h2>Arrays</h2>
+<pre><code>let map: [u8 * 20] = 0     # 20-byte array, initialized to 0
+let grid: [u8 * 100] = 0
+</code></pre>
+<p>Access and assign by index:</p>
+<pre><code>map[5] := 42
+let val = map[x]
+</code></pre>
+<p>Arrays are stored as contiguous WRAM. Index expressions can be variables or constants. Note the syntax uses <code>*</code> for array size: <code>[u8 * N]</code>.</p>
+<h3>Assignment</h3>
+<pre><code>x := x + 1
+speed := -speed
+</code></pre>
+<p>Use <code>:=</code> for reassignment (not <code>=</code>).</p>
+<h2>Operators</h2>
+<h3>Arithmetic</h3>
+<table><thead><tr><th>Operator</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>+</code></td><td>Add</td></tr>
+<tr><td><code>-</code></td><td>Subtract (or unary negate)</td></tr>
+<tr><td><code>*</code></td><td>Multiply</td></tr>
+<tr><td><code>/</code></td><td>Divide (power-of-2 only)</td></tr>
+<tr><td><code>%</code></td><td>Modulo (power-of-2 only)</td></tr>
+</tbody></table>
+<blockquote>
+<p><code>/</code> and <code>%</code> currently require the right-hand side to be a constant power of 2 (1, 2, 4, 8, 16, …). For example: <code>x / 8</code> and <code>frame % 4</code>.</p>
+</blockquote>
+<h3>Comparison</h3>
+<table><thead><tr><th>Operator</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>==</code></td><td>Equal</td></tr>
+<tr><td><code>!=</code></td><td>Not equal</td></tr>
+<tr><td><code>&lt;</code></td><td>Less than</td></tr>
+<tr><td><code>&lt;=</code></td><td>Less or equal</td></tr>
+<tr><td><code>&gt;</code></td><td>Greater than</td></tr>
+<tr><td><code>&gt;=</code></td><td>Greater or equal</td></tr>
+</tbody></table>
+<h3>Bitwise</h3>
+<table><thead><tr><th>Operator</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>&amp;</code></td><td>Bitwise AND</td></tr>
+<tr><td><code>|</code></td><td>Bitwise OR</td></tr>
+<tr><td><code>&lt;&lt;</code></td><td>Shift left (constant count only)</td></tr>
+<tr><td><code>&gt;&gt;</code></td><td>Shift right (constant count only)</td></tr>
+</tbody></table>
+<pre><code>let masked = flags &amp; 3
+let high = value &gt;&gt; 4
+let packed = base | (1 &lt;&lt; 2)
+</code></pre>
+<blockquote>
+<p><code>&lt;&lt;</code> and <code>&gt;&gt;</code> require a constant shift amount. For example: <code>x &lt;&lt; 3</code> or <code>val &gt;&gt; 2</code>.</p>
+</blockquote>
+<h3>Logical</h3>
+<table><thead><tr><th>Operator</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>and</code></td><td>Logical AND</td></tr>
+<tr><td><code>or</code></td><td>Logical OR</td></tr>
+<tr><td><code>not</code></td><td>Logical NOT (unary)</td></tr>
+</tbody></table>
+<h2>Control flow</h2>
+<h3>If / elif / else</h3>
+<pre><code>if x &gt; 100:
+    x := 0
+elif x &gt; 50:
+    speed := 1
+else:
+    speed := 2
+</code></pre>
+<h3>Match / Case</h3>
+<pre><code>match scene:
+    case SCENE_TOWN:
+        check_town()
+    case SCENE_HOUSE:
+        check_house()
+    else:
+        pass
+</code></pre>
+<p>Compares one expression against multiple constants. <code>else:</code> is optional (default branch). Cleaner than chains of <code>if</code>/<code>elif</code>.</p>
+<h3>While loop</h3>
+<pre><code>let i = 0
+while i &lt; 10:
+    set_bg_tile(i, 0, my_tile)
+    i := i + 1
+</code></pre>
+<h3>Loop (infinite)</h3>
+<pre><code>loop:
+    # runs forever
+    x := x + 1
+</code></pre>
+<h2>Functions</h2>
+<pre><code>fn clamp(val: u8, max: u8) -&gt; u8:
+    if val &gt; max:
+        return max
+    return val
+</code></pre>
+<ul>
+<li>Parameters must have type annotations</li>
+<li>Return type is specified with <code>-&gt;</code> (optional if no return value)</li>
+<li>Functions are called like: <code>clamp(x, 160)</code></li>
+<li>Local <code>let</code> variables inside functions are <strong>scoped</strong> — <code>let tx</code> in two different functions won't collide</li>
+</ul>
+<h2>Init and VBlank</h2>
+<pre><code>init:
+    # runs once at startup
+    set_sprite(0, 80, 72, player)
+
+on vblank:
+    # runs every frame (~59.7 fps)
+    # this is where your game loop goes
+    x := x + 1
+    set_sprite(0, x, 72, player)
+</code></pre>
+<p>The <code>init:</code> block runs once when the ROM starts. The <code>on vblank:</code> block is called by the GPU at the end of every frame.</p>
+<h2>Comments</h2>
+<pre><code># This is a comment
+let x = 10  # inline comment
+</code></pre>
+
+            <div class="page-footer" style="display:flex;align-items:center;gap:10px">
+                <a href="https://github.com/tedbauer/emulator/edit/master/docs-site/pages&#x2F;docs&#x2F;syntax.md" target="_blank" rel="noopener">
+                    ✏️ Send a pull request
+                </a>
+                <span style="color:#b8c4a8">·</span>
+                <a href="https://polarbeardomestication.net/pushpin" target="_blank" rel="noopener" style="color:#7a8a6a;font-size:0.78rem">📌 Docs generated by pushpin</a>
+            </div>
+        </main>
+    </div>
+    <script>
+        hljs.highlightAll();
+        // Highlight current page in sidebar
+        const current = location.pathname.split('/').pop();
+        document.querySelectorAll('.sidebar nav a').forEach(a => {
+            if (a.getAttribute('href') === current) a.classList.add('active');
+        });
+    </script>
+</body>
+
+</html>
