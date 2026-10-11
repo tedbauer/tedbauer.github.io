@@ -1,7 +1,7 @@
 homepage: index.md
 
 posts:
-  - title: 'Understanding git a lil better'
+  - title: 'Undoing a bad git commit --amend with reflog and reset'
     date: '3-30-2025'
     path: posts/notes3.md
     name: notes3
@@ -9,7 +9,7 @@ posts:
     date: '10-05-2024'
     path: posts/notes2.md
     name: notes2
-  - title: 'Making a small tool to jump multiple directory levels quickly'
+  - title: 'How to implement custom autocomplete for bash commands'
     date: '05-05-2024'
     path: posts/notes1.md
     name: notes1

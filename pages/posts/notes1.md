@@ -2,7 +2,7 @@
 template: post.html
 ---
 
-# [`up`](https://github.com/tedbauer/homebrew-up): jump multiple directory levels quickly
+# How to implement custom autocomplete for bash commands
 
 ## Introduction
 

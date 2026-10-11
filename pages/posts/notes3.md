@@ -2,7 +2,7 @@
 template: post.html
 ---
 
-# Understanding git a lil better
+# Undoing a bad `git commit --amend` with `reflog` and `reset`
 
 ## Introduction
 
